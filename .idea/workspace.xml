@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Initial layout with basic preview panel - hardcoded text" />
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Initial layout with basic preview panel - hardcoded text">
+      <change afterPath="$PROJECT_DIR$/bin/0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/contentmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/contentmanager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/preview_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/preview_panel.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +41,11 @@
     &quot;accountId&quot;: &quot;ca3cf777-b656-46cd-a680-9915a1a34e96&quot;
   }
 }</component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="35Z70BtWxBqtnCimfR627sgQ6JV" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -39,15 +53,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.Content Manager.executor&quot;: &quot;Run&quot;,
-    &quot;Python.contentmanager.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Content Manager.executor": "Run",
+    "Python.contentmanager.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Storage/Coding/Games",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Content Manager" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ContentManager_V3" />
@@ -101,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763301340270</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Initial layout with basic preview panel - hardcoded text">
+      <option name="closed" value="true" />
+      <created>1763305552146</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1763305552146</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

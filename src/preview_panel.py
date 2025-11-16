@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget
 from PyQt5.QtCore import Qt
 
 from widgets import Partition, ImageWidget, TextWidget
@@ -35,3 +35,19 @@ class PreviewPanel(Partition):
 
         # Create blank space below media metadata
         self.layout.addStretch()
+
+        # Create a horizontal layout for buttons
+        self.player_menu = QWidget(self)
+        self.player_menu.setStyleSheet(f"background-color : #222222")
+        self.player_menu.setMinimumSize(1, 100)
+        button_layout = QHBoxLayout(self.player_menu)
+
+        # Add 5 buttons to the button layout
+        for i in range(1, 6):
+            button = QPushButton(f"Button {i}")
+            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            button_layout.addWidget(button)
+
+        # Add the QWidget with the buttons to the main layout
+        self.layout.addWidget(self.player_menu)
+
