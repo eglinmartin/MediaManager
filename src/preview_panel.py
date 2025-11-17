@@ -17,33 +17,37 @@ class PreviewPanel(Partition):
     def __init__(self, player, color, selected_media):
         super().__init__(color)
 
+
         # Create main image label
-        self.label_image = ImageWidget(self, back_col='#694343', font_col='#ffffff', alignment=Qt.AlignCenter)
+        self.label_image = ImageWidget(self, back_col='#000000', font_col='#ffffff', alignment=Qt.AlignCenter)
         self.label_image.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.layout.addWidget(self.label_image, alignment=Qt.AlignTop)
 
         # Create title label
-        self.title_font = QFont("Bahnschrift Semibold", 18)
+        self.title_font = QFont("Bahnschrift Semibold", int(20 * player.font_multiplier))
         self.label_title = TextWidget(self, font_col='#ffffff', font=self.title_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_title, alignment=Qt.AlignTop)
 
         # Create director label
-        self.director_font = QFont("Bahnschrift Semibold", 16)
+        self.director_font = QFont("Bahnschrift Semibold", int(16 * player.font_multiplier))
         self.label_director = TextWidget(self, font_col='#dddddd', font=self.director_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_director, alignment=Qt.AlignTop)
 
         # Create cast label
-        self.cast_font = QFont("Bahnschrift Semibold", 12)
-        self.label_cast = TextWidget(self, font_col='#dddddd', font=self.cast_font, alignment=Qt.AlignLeft)
+        self.cast_font = QFont("Bahnschrift Semibold", int(12 * player.font_multiplier))
+        self.label_cast = TextWidget(self, font_col='#aaaaaa', font=self.cast_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_cast, alignment=Qt.AlignTop)
 
         # Create blank space below media metadata
+        self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.addStretch()
 
         # Create a horizontal layout for buttons
         self.player_menu = QWidget(self)
         self.player_menu.setStyleSheet(f"background-color : #1c1c1c")
         self.player_menu.setMinimumSize(1, 100)
+        self.player_menu.setFixedHeight(int(self.width()/5.5))
+
         button_layout = QHBoxLayout(self.player_menu)
 
         button_shuffle = PlayerButton("Shuffle")
@@ -64,10 +68,12 @@ class PreviewPanel(Partition):
         button_favourite = PlayerButton("Favourite")
         button_layout.addWidget(button_favourite)
 
-        # Add the QWidget with the buttons to the main layout
         self.layout.addWidget(self.player_menu)
 
         self.update_panel(selected_media)
+
+    def resizeEvent(self, event):
+        self.label_image.setMaximumSize(self.label_image.width(), int(self.label_image.width()* 0.562))
 
     def update_panel(self, selected_media):
         self.label_title.set_text(selected_media.title)

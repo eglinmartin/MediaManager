@@ -1,16 +1,22 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
-from PyQt5.QtGui import QPalette, QColor, QPixmap, QFont
+from PyQt5.QtGui import QPalette, QColor, QPixmap, QFont, QPainter, QTextOption
 from PyQt5.QtCore import Qt
 
 
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont
+from PyQt5.QtCore import Qt
+
 class ImageWidget(QLabel):
-    def __init__(self, parent, back_col: str, font_col: str, alignment):
+    def __init__(self, parent, back_col: str, font_col: str, alignment, text=None):
         super().__init__(parent)
         self.setStyleSheet(f"background-color: {back_col}; color: {font_col};")
         self.setAlignment(alignment)
         self.setWordWrap(True)
-        self.pixmap_original = None
-        self.setMinimumSize(1, 1)
+        self.pixmap_original = None  # Original pixmap loaded from the image
+        self.pixmap_scaled = None  # Scaled pixmap for display
+        self.text = text  # Text to display over image
+        self.setMinimumSize(1, 1)  # Minimum size for the label
 
     def set_image(self, image_name: str):
         """
@@ -40,12 +46,12 @@ class ImageWidget(QLabel):
         """
         if self.pixmap_original:
             # Scale the pixmap to the label's width and height dynamically
-            scaled_pixmap = self.pixmap_original.scaled(
+            self.pixmap_scaled = self.pixmap_original.scaled(
                 self.width(), self.height(),
                 Qt.KeepAspectRatio,
                 Qt.SmoothTransformation
             )
-            self.setPixmap(scaled_pixmap)
+            self.setPixmap(self.pixmap_scaled)
 
 
 class TextWidget(QLabel):
@@ -71,9 +77,9 @@ class Partition(QWidget):
         self.setPalette(palette)
 
         self.layout = QVBoxLayout()
-        self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setSpacing(15)
         self.setLayout(self.layout)
+
 
     def add_widget(self, widget):
         self.layout.addWidget(widget)

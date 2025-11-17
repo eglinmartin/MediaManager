@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Add placeholder buttons to preview panel">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Add placeholder media with basic shuffle / next / previous function">
       <change afterPath="$PROJECT_DIR$/bin/0" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bin/1" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bin/2" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/bin/3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/contentmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/contentmanager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/preview_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/preview_panel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,10 +42,10 @@
     &quot;accountId&quot;: &quot;ca3cf777-b656-46cd-a680-9915a1a34e96&quot;
   }
 }</component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="35Z70BtWxBqtnCimfR627sgQ6JV" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -55,16 +54,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Content Manager.executor": "Run",
-    "Python.contentmanager.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Storage/Coding/Games",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Content Manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.contentmanager.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Content Manager" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ContentManager_V3" />
@@ -134,12 +133,21 @@
       <option name="project" value="LOCAL" />
       <updated>1763309135758</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add placeholder media with basic shuffle / next / previous function">
+      <option name="closed" value="true" />
+      <created>1763313848388</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1763313848388</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial layout with basic preview panel - hardcoded text" />
     <MESSAGE value="Add placeholder buttons to preview panel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add placeholder buttons to preview panel" />
+    <MESSAGE value="Add placeholder media with basic shuffle / next / previous function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add placeholder media with basic shuffle / next / previous function" />
   </component>
 </project>
