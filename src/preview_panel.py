@@ -17,7 +17,6 @@ class PreviewPanel(Partition):
     def __init__(self, player, color, selected_media):
         super().__init__(color)
 
-
         # Create main image label
         self.label_image = ImageWidget(self, back_col='#000000', font_col='#ffffff', alignment=Qt.AlignCenter)
         self.label_image.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
