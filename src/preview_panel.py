@@ -23,18 +23,18 @@ class PreviewPanel(Partition):
         self.layout.addWidget(self.label_image, alignment=Qt.AlignTop)
 
         # Create title label
-        self.title_font = QFont("Bahnschrift Semibold", int(20 * player.font_multiplier))
+        self.title_font = QFont("Bahnschrift Semibold", int(16 * player.font_multiplier))
         self.label_title = TextWidget(self, font_col='#ffffff', font=self.title_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_title, alignment=Qt.AlignTop)
 
         # Create director label
-        self.director_font = QFont("Bahnschrift Semibold", int(16 * player.font_multiplier))
-        self.label_director = TextWidget(self, font_col='#dddddd', font=self.director_font, alignment=Qt.AlignLeft)
+        self.director_font = QFont("Bahnschrift Semibold", int(13 * player.font_multiplier))
+        self.label_director = TextWidget(self, font_col='#aaaaaa', font=self.director_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_director, alignment=Qt.AlignTop)
 
         # Create cast label
-        self.cast_font = QFont("Bahnschrift Semibold", int(12 * player.font_multiplier))
-        self.label_cast = TextWidget(self, font_col='#aaaaaa', font=self.cast_font, alignment=Qt.AlignLeft)
+        self.cast_font = QFont("Bahnschrift Semibold", int(10 * player.font_multiplier))
+        self.label_cast = TextWidget(self, font_col='#777777', font=self.cast_font, alignment=Qt.AlignLeft)
         self.layout.addWidget(self.label_cast, alignment=Qt.AlignTop)
 
         # Create blank space below media metadata

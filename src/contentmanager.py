@@ -16,8 +16,8 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Content Manager")
 
         screen_geometry = QDesktopWidget().availableGeometry()
-        self.min_width = int(screen_geometry.width() * 1)
-        self.min_height = int(screen_geometry.height() * 1)
+        self.min_width = int(screen_geometry.width())
+        self.min_height = int(screen_geometry.height())
         self.setMinimumSize(self.min_width, self.min_height)
         self.showFullScreen()
 
