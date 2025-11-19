@@ -1,18 +1,24 @@
+import argparse
 import random
 import sys
 from datetime import datetime
 
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel, QDesktopWidget
 
-from handler import Media
+from browser_panel import BrowserPanel
+from handler import Media, load_media_from_json
 from preview_panel import PreviewPanel
 from selector_panel import SelectorPanel
 from widgets import Partition
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, media):
         super().__init__()
+        self.media = media
+        self.filtered_media = []
+        self.media.sort(key=lambda m: m.title)
         self.setWindowTitle("Content Manager")
 
         screen_geometry = QDesktopWidget().availableGeometry()
@@ -23,14 +29,7 @@ class MainWindow(QMainWindow):
 
         self.font_multiplier = self.min_width / 1280
 
-        self.media = [
-            Media('Indiana Jones and the Raiders of the Lost Ark', 'Steven Spielberg', ['Harrison Ford', 'Karen Allen', 'Paul Freeman'], 0, datetime(1981, 1, 1), 'Movie', ['favourite']),
-            Media('Indiana Jones and the Temple of Doom', 'Steven Spielberg', ['Harrison Ford', 'Kate Capshaw', 'Ke Huy Quan'], 1, datetime(1981, 1, 1), 'Movie', ['favourite']),
-            Media('Indiana Jones and the Last Crusade', 'Steven Spielberg', ['Harrison Ford', 'Sean Connery', 'Denholm Elliott'], 2, datetime(1981, 1, 1), 'Movie', ['favourite']),
-            Media('Indiana Jones and the Kingdom of the Crystal Skull', 'Steven Spielberg', ['Harrison Ford', 'Cate Blanchett', 'Karen Allen'], 3, datetime(1981, 1, 1), 'Movie', ['favourite']),
-            Media('Indiana Jones and the Dial of Destiny', 'James Mangold', ['Harrison Ford', 'Phoebe Waller-Bridge', 'Antonio Banderas'], 4, datetime(1981, 1, 1), 'Movie', ['favourite']),
-        ]
-        self.selected_media = self.media[2]
+        self.selected_media = self.media[0]
 
         central = QWidget()
         self.setCentralWidget(central)
@@ -54,11 +53,11 @@ class MainWindow(QMainWindow):
         layout.addWidget(bottom_bar, 1, 0, 1, 3)
 
         # Create the list menu
-        left = Partition("#222222")
+        left = BrowserPanel(self, "#222222")
         layout.addWidget(left, 2, 0)
 
         # Create the selector menu
-        self.selector_panel = SelectorPanel(self, "#292929", self.media)
+        self.selector_panel = SelectorPanel(self, "#292929")
         layout.addWidget(self.selector_panel, 2, 1)
 
         # Create the preview panel
@@ -71,21 +70,38 @@ class MainWindow(QMainWindow):
         layout.setRowStretch(2, 8)
 
         # Setting column stretch to enforce the width percentages:
-        layout.setColumnStretch(0, 2)
-        layout.setColumnStretch(1, 5)
-        layout.setColumnStretch(2, 3)
-
+        layout.setColumnStretch(0, 20)
+        layout.setColumnStretch(1, 45)
+        layout.setColumnStretch(2, 35)
         central.setLayout(layout)
 
+        QTimer.singleShot(0, lambda: self.filter_media('all', 'all'))
+
+    def filter_media(self, item, filter):
+        self.filtered_media = [med for med in self.media]
+
+        if filter == 'cast':
+            self.filtered_media = [med for med in self.filtered_media if item in med.cast]
+
+        if item == 'All':
+            self.filtered_media = [med for med in self.media]
+
+        self.selector_panel.populate_selector()
+
     def shuffle(self):
-        shuffle_media = self.media.copy()
-        shuffle_media.remove(self.selected_media)
-        self.selected_media = random.choice(shuffle_media)
+        shuffle_media = self.filtered_media.copy()
+
+        if self.selected_media in shuffle_media:
+            shuffle_media.remove(self.selected_media)
+
+        if len(shuffle_media) > 0:
+            self.selected_media = random.choice(shuffle_media)
+
         self.preview_panel.update_panel(self.selected_media)
 
     def select_previous(self):
         current_index = self.media.index(self.selected_media)
-        self.selected_media = self.media[(current_index - 1) % len(self.media)]
+        self.selected_media = self.filtered_media[(current_index - 1) % len(self.filtered_media)]
         self.preview_panel.update_panel(self.selected_media)
 
     def select_media(self, index):
@@ -94,15 +110,26 @@ class MainWindow(QMainWindow):
 
     def select_next(self):
         current_index = self.media.index(self.selected_media)
-        self.selected_media = self.media[(current_index + 1) % len(self.media)]
+        self.selected_media = self.filtered_media[(current_index + 1) % len(self.filtered_media)]
         self.preview_panel.update_panel(self.selected_media)
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
 
 
-if __name__ == "__main__":
+def main():
+    parser = argparse.ArgumentParser(description='', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-j', '--json_path', type=str, required=True)
+    args = parser.parse_args()
+    media = load_media_from_json(args.json_path)
+
+    # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+
     app = QApplication(sys.argv)
-    win = MainWindow()
+    win = MainWindow(media)
     win.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()

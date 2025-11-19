@@ -2,10 +2,10 @@ from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
 from PyQt5.QtGui import QPalette, QColor, QPixmap, QFont, QPainter, QTextOption
 from PyQt5.QtCore import Qt
 
-
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont
 from PyQt5.QtCore import Qt
+
 
 class ImageWidget(QLabel):
     def __init__(self, parent, back_col: str, font_col: str, alignment, text=None):

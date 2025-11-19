@@ -3,7 +3,7 @@ import math
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QSpacerItem, QGridLayout, \
     QLabel, QScrollArea
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QTimer
 
 from widgets import Partition, ImageWidget, TextWidget
 
@@ -28,11 +28,10 @@ class SelectorItem(QWidget):
         self.title_label = QLabel(med_item.title)
         self.title_label.setStyleSheet(f"color: #ffffff; text-align: left top; padding: 2px;")
         self.title_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        self.title_label.setScaledContents(False)
         self.title_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         # Set font, font size and wrapping
-        self.text_font = QFont("Bahnschrift Semibold", int(10 * player.font_multiplier))
+        self.text_font = QFont("Bahnschrift Semibold", 10)
         self.title_label.setFont(self.text_font)
         self.title_label.setWordWrap(True)
 
@@ -48,8 +47,9 @@ class SelectorItem(QWidget):
 
 
 class SelectorPanel(Partition):
-    def __init__(self, player, color, media_list):
+    def __init__(self, player, color):
         super().__init__(color)
+        self.player = player
 
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setAlignment(Qt.AlignTop)
@@ -77,10 +77,10 @@ class SelectorPanel(Partition):
 
         # Create inner container for grid layout
         content_widget = QWidget()
-        grid_layout = QGridLayout()
-        grid_layout.setSpacing(20)
-        grid_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        content_widget.setLayout(grid_layout)
+        self.grid_layout = QGridLayout()
+        self.grid_layout.setSpacing(20)
+        self.grid_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        content_widget.setLayout(self.grid_layout)
 
         # Add content to outer container, and set container as scroll widget
         outer_layout.addWidget(content_widget)
@@ -88,12 +88,33 @@ class SelectorPanel(Partition):
 
         # For each media item, create a selector item element and add
         self.selector_buttons = []
-        for i, med_item in enumerate(media_list):
-            button = SelectorItem(player, med_item)
-            self.selector_buttons.append(button)
-            grid_layout.addWidget(button, i // 3, i % 3)
+        self.populate_selector()
 
         self.layout.addWidget(self.scroll_area)
+
+    def populate_selector(self):
+        for i in range(self.grid_layout.count()):
+            widget = self.grid_layout.itemAt(i).widget()
+            if widget:
+                widget.deleteLater()
+
+        self.selector_buttons = []
+        for i, med_item in enumerate(self.player.filtered_media):
+            button = SelectorItem(self.player, med_item)
+            self.selector_buttons.append(button)
+            self.grid_layout.addWidget(button, i // 3, i % 3)
+
+        self.scroll_area.widget().updateGeometry()
+        self.updateGeometry()
+        self.adjust_buttons_sizes()
+
+    def adjust_buttons_sizes(self):
+        for button in self.selector_buttons:
+            w = int(self.width() / 3) - 40
+            button.setMaximumWidth(w)
+            button.setMaximumHeight(int(w * 0.562))
+            button.image_button.setIconSize(QSize(w, int(w * 0.562)))
+            button.title_label.setFixedWidth(button.image_button.width())
 
     def resizeEvent(self, event):
         for button in self.selector_buttons:
