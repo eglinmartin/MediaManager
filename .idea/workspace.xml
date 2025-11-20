@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Add placeholder media with basic shuffle / next / previous function">
-      <change afterPath="$PROJECT_DIR$/bin/0" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/3" afterDir="false" />
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Import from database in handler">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/browser_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/browser_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/contentmanager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/contentmanager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/preview_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/preview_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +76,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/contentmanager.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="PARAMETERS" value="-j &quot;C:\Storage\Videos\Movies\movies.db&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
@@ -141,13 +138,87 @@
       <option name="project" value="LOCAL" />
       <updated>1763313848388</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add basic selector menu (no scrolling)">
+      <option name="closed" value="true" />
+      <created>1763420315705</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1763420315705</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add text to selector menu">
+      <option name="closed" value="true" />
+      <created>1763488405987</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1763488405987</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Vertical scrolling in selector menu">
+      <option name="closed" value="true" />
+      <created>1763502217983</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1763502217983</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Adjust selector panel alignment">
+      <option name="closed" value="true" />
+      <created>1763574251331</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1763574251331</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Adjust selector panel alignment - fix">
+      <option name="closed" value="true" />
+      <created>1763574311818</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1763574311818</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Browser panel and optimizations to selector.">
+      <option name="closed" value="true" />
+      <created>1763589141771</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1763589141771</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Import from database in handler">
+      <option name="closed" value="true" />
+      <created>1763589171683</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1763589171683</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial layout with basic preview panel - hardcoded text" />
     <MESSAGE value="Add placeholder buttons to preview panel" />
     <MESSAGE value="Add placeholder media with basic shuffle / next / previous function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add placeholder media with basic shuffle / next / previous function" />
+    <MESSAGE value="Add basic selector menu (no scrolling)" />
+    <MESSAGE value="Add text to selector menu" />
+    <MESSAGE value="Vertical scrolling in selector menu" />
+    <MESSAGE value="Adjust selector panel alignment" />
+    <MESSAGE value="Adjust selector panel alignment - fix" />
+    <MESSAGE value="Browser panel and optimizations to selector." />
+    <MESSAGE value="Import from database in handler" />
+    <option name="LAST_COMMIT_MESSAGE" value="Import from database in handler" />
   </component>
 </project>

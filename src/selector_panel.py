@@ -31,7 +31,7 @@ class SelectorItem(QWidget):
         self.title_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         # Set font, font size and wrapping
-        self.text_font = QFont("Bahnschrift Semibold", 10)
+        self.text_font = QFont("Bahnschrift Semibold", 14)
         self.title_label.setFont(self.text_font)
         self.title_label.setWordWrap(True)
 

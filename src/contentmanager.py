@@ -1,9 +1,12 @@
 import argparse
+import ctypes
 import random
 import sys
 from datetime import datetime
 
+from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QFont, QScreen
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel, QDesktopWidget
 
 from browser_panel import BrowserPanel
@@ -13,17 +16,34 @@ from selector_panel import SelectorPanel
 from widgets import Partition
 
 
+class TopBar(Partition):
+    def __init__(self, player, color):
+        super().__init__(color)
+        self.top_font = QFont("Bahnschrift Semibold", 36)
+
+        self.setMinimumSize(1, int(player.min_height / 8))
+        self.setMaximumSize(player.min_width, int(player.min_height / 8))
+
+        self.title_label = QLabel("  Media Manager")
+        self.title_label.setStyleSheet('color: #ffffff')
+        self.title_label.setFont(self.top_font)
+
+        self.add_widget(self.title_label)
+
+
 class MainWindow(QMainWindow):
-    def __init__(self, media):
+    def __init__(self, media, screen):
         super().__init__()
         self.media = media
         self.filtered_media = []
         self.media.sort(key=lambda m: m.title)
-        self.setWindowTitle("Content Manager")
+        self.setWindowTitle("Media Manager")
 
-        screen_geometry = QDesktopWidget().availableGeometry()
-        self.min_width = int(screen_geometry.width())
-        self.min_height = int(screen_geometry.height())
+        self.min_width = int(screen.size().width())
+        self.min_height = int(screen.size().height())
+
+        self.screen_scale = screen.devicePixelRatio()
+
         self.setMinimumSize(self.min_width, self.min_height)
         self.showFullScreen()
 
@@ -39,11 +59,8 @@ class MainWindow(QMainWindow):
         layout.setSpacing(0)
 
         # Create the top bar
-        top = Partition("#141414")
-        top.add_widget(QLabel(""))
-        top.setMinimumSize(1, int(self.min_height / 8))
-        top.setMaximumSize(self.min_width, int(self.min_height / 8))
-        layout.addWidget(top, 0, 0, 1, 3)
+        top_bar = TopBar(self, "#141414")
+        layout.addWidget(top_bar, 0, 0, 1, 3)
 
         # Create a new bar below the top bar
         bottom_bar = Partition("#333333")
@@ -135,10 +152,10 @@ def main():
     args = parser.parse_args()
     media = load_media_from_json(args.json_path)
 
-    # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-
     app = QApplication(sys.argv)
-    win = MainWindow(media)
+    screen = app.primaryScreen()
+
+    win = MainWindow(media, screen)
     win.show()
     sys.exit(app.exec_())
 

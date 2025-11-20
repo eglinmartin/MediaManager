@@ -142,6 +142,7 @@ celerybeat.pid
 env/
 venv/
 idea/
+bin/
 ENV/
 env.bak/
 venv.bak/
@@ -207,4 +208,5 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+/bin/
 /bin/
