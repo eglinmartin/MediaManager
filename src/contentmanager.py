@@ -89,6 +89,9 @@ class MainWindow(QMainWindow):
         self.selector_panel.populate_selector()
 
     def shuffle(self):
+        """
+        Removes current selection from filtered media list and picks new random media item.
+        """
         shuffle_media = self.filtered_media.copy()
 
         if self.selected_media in shuffle_media:
@@ -100,15 +103,24 @@ class MainWindow(QMainWindow):
         self.preview_panel.update_panel(self.selected_media)
 
     def select_previous(self):
+        """
+        Selects media item left of current selection from filtered media list
+        """
         current_index = self.media.index(self.selected_media)
         self.selected_media = self.filtered_media[(current_index - 1) % len(self.filtered_media)]
         self.preview_panel.update_panel(self.selected_media)
 
     def select_media(self, index):
+        """
+        Changes currently selected media item
+        """
         self.selected_media = [med for med in self.media if med.code == index][0]
         self.preview_panel.update_panel(self.selected_media)
 
     def select_next(self):
+        """
+        Selects media item right of current selection from filtered media list
+        """
         current_index = self.media.index(self.selected_media)
         self.selected_media = self.filtered_media[(current_index + 1) % len(self.filtered_media)]
         self.preview_panel.update_panel(self.selected_media)
