@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Rename to media_manager.py">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Big changes to preview panel, small styling changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/browser_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/browser_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/media_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/media_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/preview_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/preview_panel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,8 +74,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Storage\Programming\ContentManager_V3\src\media_manager.py" />
-      <option name="PARAMETERS" value="-j &quot;C:\Storage\Videos\Movies\Movies.db&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/media_manager.py" />
+      <option name="PARAMETERS" value="-db &quot;C:\Storage\Videos\Movies\Movies.db&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
@@ -219,7 +217,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763675248893</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Big changes to preview panel, small styling changes">
+      <option name="closed" value="true" />
+      <created>1763745207988</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1763745207988</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -247,17 +253,7 @@
     <MESSAGE value="Font size changes for 1080p monitors" />
     <MESSAGE value="Top bar, small adjustments" />
     <MESSAGE value="Rename to media_manager.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename to media_manager.py" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/preview_panel.py</url>
-          <line>110</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Big changes to preview panel, small styling changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Big changes to preview panel, small styling changes" />
   </component>
 </project>

@@ -18,6 +18,7 @@ class PreviewPanel(Partition):
     def __init__(self, player, color, selected_media):
         super().__init__(color)
         self.layout.setSpacing(0)
+        self.player = player
 
         # Create main image label
         self.label_image = ImageWidget(self, back_col='#252525', font_col='#ffffff', alignment=Qt.AlignCenter)
@@ -28,22 +29,22 @@ class PreviewPanel(Partition):
 
         # Create title label
         self.title_font = QFont("Bahnschrift Semibold", 28)
-        self.label_title = TextWidget(self, font_col='#ffffff', font=self.title_font, alignment=Qt.AlignLeft, back_colour='#252525')
+        self.label_title = TextWidget(self, font_col='#ffffff', font=self.title_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Title')
         self.layout.addWidget(self.label_title, alignment=Qt.AlignTop)
 
         # Create director label
         self.director_font = QFont("Bahnschrift Semibold", 20)
-        self.label_director = TextWidget(self, font_col='#aaaaaa', font=self.director_font, alignment=Qt.AlignLeft, back_colour='#252525')
+        self.label_director = TextWidget(self, font_col='#aaaaaa', font=self.director_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Director')
         self.layout.addWidget(self.label_director, alignment=Qt.AlignTop)
 
         # Create cast label
         self.cast_font = QFont("Bahnschrift Semibold", 18)
-        self.label_cast = TextWidget(self, font_col='#777777', font=self.cast_font, alignment=Qt.AlignLeft, back_colour='#252525')
+        self.label_cast = TextWidget(self, font_col='#777777', font=self.cast_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Cast')
         self.layout.addWidget(self.label_cast, alignment=Qt.AlignTop)
 
         # Create tags label
         self.tags_font = QFont("Bahnschrift Semibold", 14)
-        self.label_tags = TextWidget(self, font_col='#666666', font=self.tags_font, alignment=Qt.AlignLeft, back_colour='#252525')
+        self.label_tags = TextWidget(self, font_col='#666666', font=self.tags_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Tags')
         self.layout.addWidget(self.label_tags, alignment=Qt.AlignTop)
 
         # Create blank space below media metadata

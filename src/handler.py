@@ -37,3 +37,31 @@ def load_media_from_json(db_path: str) -> List[Media]:
         for row in data
     ]
     return media_list
+
+
+def update_db(player, column: str, value: str):
+    conn = sqlite3.connect(player.db_path)
+    cursor = conn.cursor()
+
+    for med in player.media:
+        if med.code == player.selected_media.code:
+            if column == 'Title':
+                med.title = value
+            elif column == 'Director':
+                med.director = value
+            elif column == 'Cast':
+                med.cast = value
+            elif column == 'Tags':
+                med.tags = value
+
+    query = f"""
+        UPDATE Media
+        SET {column} = '{value}'
+        WHERE ID = {player.selected_media.code};
+    """
+    cursor.execute(query)
+
+    conn.commit()
+    conn.close()
+
+    player.selector_panel.populate_selector()

@@ -44,8 +44,17 @@ class TopBar(QWidget):
         self.title_label.setFont(self.top_font)
         layout.addWidget(self.title_label)
 
-        # --- Spacer ---
         layout.addStretch()
+
+        self.add_button = QPushButton("+")
+        self.add_button.setFont(self.top_font)
+        self.add_button.setStyleSheet("""
+            QPushButton {color: #ffffff; background-color: #222222}
+            QPushButton:hover {color: #ff5555;}
+            """)
+        self.add_button.setCursor(Qt.PointingHandCursor)
+        self.add_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        layout.addWidget(self.add_button)
 
         # --- Minimize button ---
         self.minimize_button = QPushButton("_")
@@ -74,18 +83,20 @@ class TopBar(QWidget):
         self.setLayout(layout)
 
     def resizeEvent(self, event):
+        self.add_button.setFixedSize(self.add_button.height(), self.add_button.height())
         self.minimize_button.setFixedSize(self.minimize_button.height(), self.minimize_button.height())
         self.exit_button.setFixedSize(self.exit_button.height(), self.exit_button.height())
         super().resizeEvent(event)
 
 class MainWindow(QMainWindow):
-    def __init__(self, media, screen, library_name):
+    def __init__(self, media, screen, library_name, db):
         super().__init__()
         self.media = media
         self.filtered_media = []
         self.media.sort(key=lambda m: m.title)
         self.setWindowTitle("Media Manager")
         self.library_name = library_name
+        self.db_path = db
 
         self.min_width = int(screen.size().width())
         self.min_height = int(screen.size().height())
@@ -206,15 +217,15 @@ class MainWindow(QMainWindow):
 
 def main():
     parser = argparse.ArgumentParser(description='', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-j', '--json_path', type=str, required=True)
+    parser.add_argument('-db', '--db_path', type=str, required=True)
     args = parser.parse_args()
-    media = load_media_from_json(args.json_path)
-    library_name = os.path.basename(args.json_path)
+    media = load_media_from_json(args.db_path)
+    library_name = os.path.basename(args.db_path)
 
     app = QApplication(sys.argv)
     screen = app.primaryScreen()
 
-    win = MainWindow(media, screen, library_name)
+    win = MainWindow(media, screen, library_name, args.db_path)
     win.show()
     sys.exit(app.exec_())
 

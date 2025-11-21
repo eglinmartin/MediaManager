@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont
 from PyQt5.QtCore import Qt
 
+import handler
+
 
 class ImageWidget(QLabel):
     def __init__(self, parent, back_col: str, font_col: str, alignment, text=None):
@@ -55,7 +57,7 @@ class ImageWidget(QLabel):
 
 
 class TextWidget(QTextEdit):
-    def __init__(self, parent=None, font_col="#ffffff", font=None, alignment=Qt.AlignLeft, back_colour="transparent"):
+    def __init__(self, parent=None, font_col="#ffffff", font=None, alignment=Qt.AlignLeft, back_colour="transparent", column=None):
         super().__init__(parent)
 
         if font:
@@ -80,6 +82,16 @@ class TextWidget(QTextEdit):
         # Connect text changes → resize
         self.textChanged.connect(self.updateHeight)
         self.updateHeight()  # set initial height
+
+        self.parent = parent
+        self.column = column
+
+    def keyPressEvent(self, event):
+        if event.key() in (Qt.Key_Return, Qt.Key_Enter):
+            handler.update_db(player=self.parent.player, column=self.column, value=self.toPlainText())
+            event.accept()
+        else:
+            super().keyPressEvent(event)
 
     def updateHeight(self):
         doc = self.document()
