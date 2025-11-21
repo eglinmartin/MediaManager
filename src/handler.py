@@ -31,7 +31,7 @@ def load_media_from_json(db_path: str) -> List[Media]:
             cast=row[column_names.index('Cast')].split(', '),
             code=row[column_names.index('ID')],
             date=datetime.fromisoformat(row[column_names.index('Date')]),
-            media_type=row[column_names.index('Type')],
+            media_type=row[column_names.index('Type')].split(', '),
             tags=row[column_names.index('Tags')]
         )
         for row in data

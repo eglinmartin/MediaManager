@@ -51,9 +51,10 @@ class TopBar(QWidget):
         self.minimize_button = QPushButton("_")
         self.minimize_button.setFont(self.top_font)
         self.minimize_button.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #222222; border: none;}
+            QPushButton {color: #ffffff; background-color: #222222}
             QPushButton:hover {color: #ff5555;}
             """)
+        self.minimize_button.setCursor(Qt.PointingHandCursor)
         self.minimize_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.minimize_button.clicked.connect(lambda: self.window().showMinimized())
         layout.addWidget(self.minimize_button)
@@ -62,9 +63,10 @@ class TopBar(QWidget):
         self.exit_button = QPushButton("✕")
         self.exit_button.setFont(self.top_font)
         self.exit_button.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #aa1414; border: none;}
-            QPushButton:hover {color: #ff5555;}
+            QPushButton {color: #ffffff; background-color: #ff5555;}
+            QPushButton:hover {color: #ff0000;}
             """)
+        self.exit_button.setCursor(Qt.PointingHandCursor)
         self.exit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.exit_button.clicked.connect(QApplication.quit)
         layout.addWidget(self.exit_button)
@@ -152,6 +154,9 @@ class MainWindow(QMainWindow):
 
         if filter == 'cast':
             self.filtered_media = [med for med in self.filtered_media if item in med.cast]
+
+        elif filter == 'director':
+            self.filtered_media = [med for med in self.filtered_media if item in med.director]
 
         if item == 'All':
             self.filtered_media = [med for med in self.media]

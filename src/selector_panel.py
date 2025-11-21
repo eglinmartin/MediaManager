@@ -21,17 +21,19 @@ class SelectorItem(QWidget):
         # Create image button
         self.image_button = QPushButton()
         self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{med_item.code}"))
+        self.image_button.setStyleSheet(f"border: none;")
         self.image_button.clicked.connect(lambda: player.select_media(med_item.code))
         self.image_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.image_button.setCursor(Qt.PointingHandCursor)
 
         # Create title label
         self.title_label = QLabel(med_item.title)
-        self.title_label.setStyleSheet(f"color: #ffffff; text-align: left top; padding: 2px;")
+        self.title_label.setStyleSheet(f"color: #ffffff; text-align: left top; padding: 2px; background-color: #1d1d1d;")
         self.title_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.title_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         # Set font, font size and wrapping
-        self.text_font = QFont("Bahnschrift Semibold", 11)
+        self.text_font = QFont("Bahnschrift Semibold", 14)
         self.title_label.setFont(self.text_font)
         self.title_label.setWordWrap(True)
 

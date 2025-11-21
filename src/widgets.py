@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QSizePolicy, QTextEdit, QLineEdit
 from PyQt5.QtGui import QPalette, QColor, QPixmap, QFont, QPainter, QTextOption
 from PyQt5.QtCore import Qt
 
@@ -54,18 +54,48 @@ class ImageWidget(QLabel):
             self.setPixmap(self.pixmap_scaled)
 
 
-class TextWidget(QLabel):
-    def __init__(self, parent, font_col: str, font: QFont, alignment):
+class TextWidget(QTextEdit):
+    def __init__(self, parent=None, font_col="#ffffff", font=None, alignment=Qt.AlignLeft, back_colour="transparent"):
         super().__init__(parent)
-        self.setFont(font)
-        self.setStyleSheet(f"color: {font_col};")
+
+        if font:
+            self.setFont(font)
+
+        self.setStyleSheet(
+            f"""color: {font_col}; background-color: {back_colour}; border: none;"""
+        )
+
         self.setAlignment(alignment)
-        self.setWordWrap(True)
-        self.setMinimumSize(1, 1)
+
+        # Enable word wrap
+        self.setWordWrapMode(QTextOption.WordWrap)
+
+        # No scrollbars
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        # Expand horizontally, but the HEIGHT will be controlled manually
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
+        # Connect text changes → resize
+        self.textChanged.connect(self.updateHeight)
+        self.updateHeight()  # set initial height
+
+    def updateHeight(self):
+        doc = self.document()
+        doc.setTextWidth(self.viewport().width())
+        newHeight = doc.size().height() + 6   # padding
+
+        self.setFixedHeight(int(newHeight))
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        # recalc height when width changes
+        self.updateHeight()
+
     def set_text(self, text):
-        self.setText(text)
+        self.setPlainText(text)
+        self.updateHeight()
 
 
 class Partition(QWidget):

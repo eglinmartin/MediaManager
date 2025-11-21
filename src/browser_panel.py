@@ -14,8 +14,8 @@ class Browser(QListWidget):
         self.setStyleSheet("""
             QListWidget {border: none; color: #ffffff; background-color: #222222;}
             QListWidget::item {padding-top: 5px; padding-bottom: 5px;}
-            QListWidget::item:selected {background-color: #1a1a1a; color: white; outline: none; border: none;}
-            QListWidget::item:hover {background-color: #2a2a2a; outline: none;}
+            QListWidget::item:selected {background-color: #1a1a1a; color: white; outline: none; border: none; color: #ff5555;}
+            QListWidget::item:hover {background-color: #2a2a2a; outline: none; color: #ff5555;}
             QListView { outline: 0;}
             QScrollBar:vertical {border: 1px solid #222222; background: #292929; width: 15px; margin: 0px 0px 0px 0px;}
             QScrollBar::handle:vertical {background: #191919; min-height: 20px; border-radius: 7px;}
@@ -23,10 +23,10 @@ class Browser(QListWidget):
             QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background: #222222;}
             """)
 
-        self.browser_font = QFont("Bahnschrift Semibold", 12)
+        self.browser_font = QFont("Bahnschrift Semibold", 16)
         self.setFont(self.browser_font)
 
-        self.itemClicked.connect(lambda item: player.filter_media(item.text(), 'cast'))
+        self.itemClicked.connect(lambda item: player.filter_media(item.text(), 'director'))
 
 
 class BrowserPanel(Partition):
@@ -36,7 +36,8 @@ class BrowserPanel(Partition):
 
         self.list_widget = Browser(player, color)
 
-        unique_items = {'All'} | {actor for med in player.media for actor in med.cast}
+        # unique_items = {'All'} | {actor for med in player.media for actor in med.cast}
+        unique_items = {'All'} | {item.director for item in player.media}
         sorted_items = sorted(unique_items)
 
         for item in sorted_items:
