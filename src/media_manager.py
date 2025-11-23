@@ -9,10 +9,10 @@ from datetime import datetime
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel, QHBoxLayout, \
-    QSpacerItem, QSizePolicy, QPushButton, QLineEdit, QFileDialog
+    QSpacerItem, QSizePolicy, QPushButton, QLineEdit, QFileDialog, QComboBox
 
 import handler
-from browser_panel import BrowserPanel
+from browser_panel import BrowserPanel, SortType
 from handler import Media, load_media_from_json
 from preview_panel import PreviewPanel
 from selector_panel import SelectorPanel
@@ -107,15 +107,35 @@ class BottomBar(QWidget):
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(20)
 
-        self.button_browse = QPushButton('Directors')
-        self.button_browse.setFont(self.bottom_bar_font)
-        self.button_browse.setStyleSheet("""
+        self.combobox_browse = QComboBox()
+        self.combobox_browse.setFont(self.bottom_bar_font)
+        self.combobox_browse.setStyleSheet("""
+             QComboBox {color: #ffffff; background-color: #444444; selection-background-color: transparent; padding-left: 10px;}
+             QComboBox:hover {color: #ff5555;}
+             QComboBox:drop-down {border: none; color: #ff5555;}
+             QComboBox QAbstractItemView {background-color: #444444; color: #ffffff; selection-background-color: transparent; selection-color: #ff5555;}
+             QComboBox::down-arrow {color: #ffffff;}
+             """)
+        self.combobox_browse.setCursor(Qt.PointingHandCursor)
+        self.combobox_browse.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.combobox_browse.currentTextChanged.connect(self.player.browser_panel.update_listbox)
+
+        # list_options = ['Directors', 'Cast', 'Tags']
+        list_options = ['Directors', 'Cast']
+        for list_option in list_options:
+            self.combobox_browse.addItem(list_option)
+        layout.addWidget(self.combobox_browse)
+
+        self.button_sort_browser = QPushButton('A-z')
+        self.button_sort_browser.setFont(self.bottom_bar_font)
+        self.button_sort_browser.setStyleSheet("""
              QPushButton {color: #ffffff; background-color: #444444;}
              QPushButton:hover {color: #ff5555;}
              """)
-        self.button_browse.setCursor(Qt.PointingHandCursor)
-        self.button_browse.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        layout.addWidget(self.button_browse)
+        self.button_sort_browser.setCursor(Qt.PointingHandCursor)
+        self.button_sort_browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.button_sort_browser.clicked.connect(self.player.browser_panel.set_sort_type)
+        layout.addWidget(self.button_sort_browser)
 
         layout.addSpacerItem(QSpacerItem(30, 0, QSizePolicy.Fixed, QSizePolicy.Fixed))
 
@@ -193,12 +213,15 @@ class BottomBar(QWidget):
 
     def resizeEvent(self, event):
         self.button_add.setFixedSize(self.searchbar.height(), self.searchbar.height())
-        self.button_favourite.setFixedSize(self.searchbar.height(), self.searchbar.height())
-        self.button_browse.setFixedWidth(self.player.browser_panel.list_widget.width() + 10)
+
+        self.button_sort_browser.setFixedSize(self.searchbar.height(), self.searchbar.height())
+        self.combobox_browse.setFixedSize(self.player.browser_panel.list_widget.width() - 60, self.searchbar.height())
+
         self.searchbar.setFixedWidth(self.player.preview_panel.label_image.width() - 20 - self.button_add.width())
         self.button_sort.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_switcher.setFixedSize(self.searchbar.height() * 4, self.searchbar.height())
 
+        self.button_favourite.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_zoom.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_zoom.setIconSize(self.button_zoom.size())
 
@@ -280,7 +303,6 @@ class MainWindow(QMainWindow):
     def toggle_favourites(self):
         self.favourites_only = not self.favourites_only
         self.filter_media()
-        print(self.favourites_only)
 
     def filter_media(self, filter_item=None, filter_column=None):
         if filter_column:
@@ -294,11 +316,12 @@ class MainWindow(QMainWindow):
             self.filtered_media = [med for med in self.media]
 
         else:
-            if self.filter_column == 'cast':
-                self.filtered_media = [med for med in self.filtered_media if self.filter_item in med.cast]
-            elif self.filter_column == 'director':
+            if self.filter_column == 'Directors':
                 self.filtered_media = [med for med in self.filtered_media if str(self.filter_item).split(' (')[0] in med.director]
-                pass
+            if self.filter_column == 'Cast':
+                self.filtered_media = [med for med in self.filtered_media if str(self.filter_item).split(' (')[0] in med.cast]
+            elif self.filter_column == 'Tags':
+                self.filtered_media = [med for med in self.filtered_media if med.tags and self.filter_item in med.tags]
 
         if self.bottom_bar.searchbar.text():
             self.search()
@@ -366,6 +389,7 @@ class MainWindow(QMainWindow):
         """
         self.selected_media.favourite = not bool(int(self.selected_media.favourite))
         handler.update_db(self, column='Favourite', value=str(int(self.selected_media.favourite)))
+        self.selector_panel.populate_selector()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)

@@ -29,7 +29,6 @@ class ImageWidget(QLabel):
         pixmap = QPixmap(image_name)
 
         if pixmap.isNull():
-            print(f"Failed to load image: {image_name}")
             return
 
         self.pixmap_original = pixmap

@@ -91,7 +91,7 @@ class SelectorPanel(Partition):
         self.screen_scale = screen_scale
 
         self.num_columns = 3
-        self.columns_spacing = {3: 40, 4: 35, 5: 31, 6: 30}
+        self.columns_spacing = {3: 40, 4: 35, 5: 31}
 
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setAlignment(Qt.AlignTop)
@@ -152,7 +152,7 @@ class SelectorPanel(Partition):
         self.adjust_buttons_sizes()
 
     def switch_size(self):
-        self.num_columns = {3: 4, 4: 5, 5: 6, 6: 3}[self.num_columns]
+        self.num_columns = {3: 4, 4: 5, 5: 3}[self.num_columns]
         self.populate_selector()
 
     def adjust_buttons_sizes(self):
@@ -160,11 +160,3 @@ class SelectorPanel(Partition):
             w = int(self.width() / self.num_columns) - self.columns_spacing[self.num_columns]
             button.image_button.setIconSize(QSize(w, int(w * 0.562)))
             button.image_button.setMaximumSize(QSize(w, int(w * 0.562)))
-
-    # def resizeEvent(self, event):
-    #     for button in self.selector_buttons:
-    #         # Set resizing on window change
-    #         button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-    #         button.setMaximumWidth(int(self.width() / self.num_columns) - self.columns_spacing[self.num_columns])
-    #         button.image_button.setIconSize(QSize(button.width(), int(button.width()* 0.562)))
-    #         button.title_label.setFixedWidth(button.image_button.width())
