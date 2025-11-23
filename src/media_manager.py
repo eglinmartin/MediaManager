@@ -117,7 +117,20 @@ class BottomBar(QWidget):
         self.button_browse.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(self.button_browse)
 
-        layout.addSpacerItem(QSpacerItem(40, 0, QSizePolicy.Fixed, QSizePolicy.Fixed))
+        layout.addSpacerItem(QSpacerItem(30, 0, QSizePolicy.Fixed, QSizePolicy.Fixed))
+
+        self.button_zoom = QPushButton()
+        self.button_zoom.setFont(self.bottom_bar_font)
+        self.button_zoom.setStyleSheet("""
+             QPushButton {color: #ffffff; background-color: #444444;}
+             QPushButton:hover {color: #ff5555;}
+             """)
+        current_zoom = self.player.selector_panel.num_columns
+        self.button_zoom.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_zoom_{current_zoom}"))
+        self.button_zoom.setCursor(Qt.PointingHandCursor)
+        self.button_zoom.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.button_zoom.clicked.connect(self.switch_size)
+        layout.addWidget(self.button_zoom)
 
         self.button_sort = QPushButton('Az')
         self.button_sort.setFont(self.bottom_bar_font)
@@ -132,11 +145,12 @@ class BottomBar(QWidget):
         self.button_favourite = QPushButton('★')
         self.button_favourite.setFont(self.bottom_bar_font)
         self.button_favourite.setStyleSheet("""
-             QPushButton {color: #ffffff; background-color: #bbbb55;}
+             QPushButton {color: #ffffff; background-color: #ddbb55;}
              QPushButton:hover {color: #ffff00;}
              """)
         self.button_favourite.setCursor(Qt.PointingHandCursor)
         self.button_favourite.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.button_favourite.clicked.connect(player.toggle_favourites)
         layout.addWidget(self.button_favourite)
 
         self.button_switcher = QPushButton('')
@@ -172,6 +186,11 @@ class BottomBar(QWidget):
 
         self.setLayout(layout)
 
+    def switch_size(self):
+        self.player.selector_panel.switch_size()
+        current_zoom = self.player.selector_panel.num_columns
+        self.button_zoom.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_zoom_{current_zoom}"))
+
     def resizeEvent(self, event):
         self.button_add.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_favourite.setFixedSize(self.searchbar.height(), self.searchbar.height())
@@ -179,6 +198,9 @@ class BottomBar(QWidget):
         self.searchbar.setFixedWidth(self.player.preview_panel.label_image.width() - 20 - self.button_add.width())
         self.button_sort.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_switcher.setFixedSize(self.searchbar.height() * 4, self.searchbar.height())
+
+        self.button_zoom.setFixedSize(self.searchbar.height(), self.searchbar.height())
+        self.button_zoom.setIconSize(self.button_zoom.size())
 
 
 class MainWindow(QMainWindow):
@@ -205,6 +227,7 @@ class MainWindow(QMainWindow):
         self.thumb_cache = {}
 
         self.selected_media = self.media[0]
+        self.favourites_only = False
 
         central = QWidget()
         self.setCentralWidget(central)
@@ -254,6 +277,11 @@ class MainWindow(QMainWindow):
             self.thumb_cache[path] = QIcon(path)
         return self.thumb_cache[path]
 
+    def toggle_favourites(self):
+        self.favourites_only = not self.favourites_only
+        self.filter_media()
+        print(self.favourites_only)
+
     def filter_media(self, filter_item=None, filter_column=None):
         if filter_column:
             self.filter_column = filter_column
@@ -274,6 +302,9 @@ class MainWindow(QMainWindow):
 
         if self.bottom_bar.searchbar.text():
             self.search()
+
+        if self.favourites_only:
+            self.filtered_media = [m for m in self.filtered_media if int(m.favourite)]
 
         self.selector_panel.populate_selector()
 
@@ -329,6 +360,13 @@ class MainWindow(QMainWindow):
         self.selected_media = self.filtered_media[(current_index + 1) % len(self.filtered_media)]
         self.preview_panel.update_panel(self.selected_media)
 
+    def favourite_media(self):
+        """
+        Toggles 'favourite' attribute of selected media
+        """
+        self.selected_media.favourite = not bool(int(self.selected_media.favourite))
+        handler.update_db(self, column='Favourite', value=str(int(self.selected_media.favourite)))
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
 
@@ -354,18 +392,34 @@ class MainWindow(QMainWindow):
             return
 
         file_name = os.path.splitext(os.path.basename(file_path))[0]
-        code = random.randint(1, 99999)
+        file_ext = os.path.splitext(os.path.basename(file_path))[1]
+        code = random.randint(10000, 99999)
 
         handler.insert_row(self, file_name, code)
 
         self.media.append(Media(
             title=file_name, director='Unknown', cast=['Unknown',], code=code,
-            date=datetime.fromisoformat('1900-01-01'), media_type='Video', tags=[])
+            date=datetime.fromisoformat('1900-01-01'), media_type='Video', tags=[], favourite=False)
         )
+
+        src_path = file_path
+        dest_path = fr"{os.path.dirname(self.db_path)}\Videos\{code}{file_ext}"
+        shutil.copyfile(src_path, dest_path)
+
         self.media.sort(key=lambda m: m.title)
         self.filter_media()
         self.selector_panel.populate_selector()
         self.select_media(code)
+
+    def play_video(self):
+        directory = fr"{os.path.dirname(self.db_path)}\Videos"
+        video_fname = [p for p in os.listdir(directory) if str(self.selected_media.code) in p]
+
+        if video_fname:
+            video_path = os.path.join(directory, video_fname[0])
+
+            if os.path.exists(video_path):
+                os.startfile(video_path)
 
 
 def main():

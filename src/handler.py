@@ -18,6 +18,7 @@ class Media:
     date: datetime
     media_type: str
     tags: List[str]
+    favourite: bool
 
 
 def load_media_from_json(db_path: str) -> List[Media]:
@@ -37,7 +38,8 @@ def load_media_from_json(db_path: str) -> List[Media]:
             code=row[column_names.index('ID')],
             date=datetime.fromisoformat(row[column_names.index('Date')]),
             media_type=row[column_names.index('Type')].split(', '),
-            tags=row[column_names.index('Tags')]
+            tags=row[column_names.index('Tags')],
+            favourite=row[column_names.index('Favourite')]
         )
         for row in data
     ]
@@ -50,8 +52,8 @@ def insert_row(player, file_name, code):
 
     query = f"""
         INSERT INTO Media
-        ("ID", "Title", "Director", "Cast", "Date", "Type")
-        VALUES ({code}, '{file_name}', 'Unknown', 'Unknown', '1900-01-01', 'Video');
+        ("ID", "Title", "Director", "Cast", "Date", "Type", "Favourite")
+        VALUES ({code}, '{file_name}', 'Unknown', 'Unknown', '1900-01-01', 'Video', 0);
     """
     cursor.execute(query)
 
@@ -73,10 +75,12 @@ def update_db(player, column: str, value: str):
                 med.cast = [value]
             elif column == 'Tags':
                 med.tags = value
+            elif column == 'Favourite':
+                med.favourite = value
 
     query = f"""
         UPDATE Media
-        SET {column} = '{value}'
+        SET {column} = "{value}"
         WHERE ID = {player.selected_media.code};
     """
     cursor.execute(query)

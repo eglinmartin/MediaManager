@@ -23,7 +23,7 @@ class Browser(QListWidget):
             QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background: #222222;}
             """)
 
-        self.browser_font = QFont("Bahnschrift Semibold", int(18 / screen_scale))
+        self.browser_font = QFont("Bahnschrift Semibold", int(14 / screen_scale))
         self.setFont(self.browser_font)
 
         self.itemClicked.connect(lambda item: player.filter_media(item.text(), 'director'))

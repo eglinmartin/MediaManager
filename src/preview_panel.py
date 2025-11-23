@@ -71,6 +71,7 @@ class PreviewPanel(Partition):
 
         self.button_play = PlayerButton()
         self.button_play.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_play.png"))
+        self.button_play.clicked.connect(player.play_video)
         self.button_layout.addWidget(self.button_play)
 
         self.button_next = PlayerButton()
@@ -80,6 +81,7 @@ class PreviewPanel(Partition):
 
         self.button_favourite = PlayerButton()
         self.button_favourite.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_fav.png"))
+        self.button_favourite.clicked.connect(player.favourite_media)
         self.button_layout.addWidget(self.button_favourite)
 
         self.layout.addWidget(self.player_menu)

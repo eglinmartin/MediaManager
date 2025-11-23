@@ -1,6 +1,6 @@
 import math
 
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QSpacerItem, QGridLayout, \
     QLabel, QScrollArea
 from PyQt5.QtCore import Qt, QSize, QTimer
@@ -27,6 +27,26 @@ class SelectorItem(QWidget):
         self.image_button.clicked.connect(lambda: player.select_media(med_item.code))
         self.image_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         self.image_button.setCursor(Qt.PointingHandCursor)
+        layout.addWidget(self.image_button, alignment=Qt.AlignTop)
+
+        # Create the overlay image label
+        self.overlay_label = QLabel(self)
+
+        if not med_item.tags:
+            self.overlay_pixmap = QPixmap(fr"C:\Storage\Programming\ContentManager_V3\bin\overlay_notags.png")
+            self.overlay_label.setPixmap(self.overlay_pixmap)
+
+        elif int(med_item.favourite):
+            self.overlay_pixmap = QPixmap(fr"C:\Storage\Programming\ContentManager_V3\bin\overlay_favourite.png")
+            self.overlay_label.setPixmap(self.overlay_pixmap)
+        else:
+            self.overlay_pixmap = None
+            self.overlay_label.setPixmap(QPixmap())
+
+        self.overlay_label.setAlignment(Qt.AlignCenter)
+        self.overlay_label.setStyleSheet("background: transparent;")
+        self.overlay_label.setAttribute(Qt.WA_TransparentForMouseEvents)
+        self.overlay_label.raise_()
 
         # Create title label
         self.title_label = QLabel(med_item.title)
@@ -40,7 +60,7 @@ class SelectorItem(QWidget):
         self.title_label.setWordWrap(True)
 
         # Add both widgets to vertical box
-        layout.addWidget(self.image_button, alignment=Qt.AlignTop)
+
         layout.addWidget(self.title_label, alignment=Qt.AlignTop)
 
     def set_icon(self, code):
@@ -50,9 +70,17 @@ class SelectorItem(QWidget):
 
     def resizeEvent(self, event):
         self.image_button.setFixedHeight(int(self.image_button.width() * 0.562))
+
+
         self.title_label.setFixedWidth(int(self.image_button.width()))
-        self.title_label.setFixedHeight(int(self.image_button.width()/4))
-        self.setFixedHeight(int(self.image_button.width()/4) + int(self.image_button.height()))
+        self.title_label.setFixedHeight(54)
+
+        self.setFixedHeight(int(self.image_button.width() * 0.562) + 54)
+
+        if self.overlay_pixmap:
+            self.overlay_label.setFixedSize(self.image_button.size())
+            scaled_pixmap = self.overlay_pixmap.scaled(self.image_button.width(), self.image_button.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.overlay_label.setPixmap(scaled_pixmap)
 
 
 class SelectorPanel(Partition):
@@ -61,6 +89,9 @@ class SelectorPanel(Partition):
         self.player = player
         self.icon_cache = {}
         self.screen_scale = screen_scale
+
+        self.num_columns = 3
+        self.columns_spacing = {3: 40, 4: 35, 5: 31, 6: 30}
 
         self.layout.setContentsMargins(20, 20, 20, 20)
         self.layout.setAlignment(Qt.AlignTop)
@@ -113,26 +144,27 @@ class SelectorPanel(Partition):
         for i, med_item in enumerate(self.player.filtered_media):
             button = SelectorItem(self.player, med_item, self.screen_scale)
             self.selector_buttons.append(button)
-            self.grid_layout.addWidget(button, i // 3, i % 3)
+            self.grid_layout.addWidget(button, i // self.num_columns, i % self.num_columns)
 
         self.scroll_area.widget().updateGeometry()
         self.updateGeometry()
 
         self.adjust_buttons_sizes()
 
+    def switch_size(self):
+        self.num_columns = {3: 4, 4: 5, 5: 6, 6: 3}[self.num_columns]
+        self.populate_selector()
+
     def adjust_buttons_sizes(self):
         for button in self.selector_buttons:
-            w = int(self.width() / 3) - 40
-            button.setMaximumWidth(w)
-            button.setMaximumHeight(int(w * 0.562))
+            w = int(self.width() / self.num_columns) - self.columns_spacing[self.num_columns]
             button.image_button.setIconSize(QSize(w, int(w * 0.562)))
-            button.title_label.setFixedWidth(button.image_button.width())
+            button.image_button.setMaximumSize(QSize(w, int(w * 0.562)))
 
-    def resizeEvent(self, event):
-        for button in self.selector_buttons:
-            # Set resizing on window change
-            button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            button.setMaximumWidth(int(self.width() / 3) - 40)
-            button.setMaximumHeight(int(button.width()* 0.562))
-            button.image_button.setIconSize(QSize(button.width(), int(button.width()* 0.562)))
-            button.title_label.setFixedWidth(button.image_button.width())
+    # def resizeEvent(self, event):
+    #     for button in self.selector_buttons:
+    #         # Set resizing on window change
+    #         button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+    #         button.setMaximumWidth(int(self.width() / self.num_columns) - self.columns_spacing[self.num_columns])
+    #         button.image_button.setIconSize(QSize(button.width(), int(button.width()* 0.562)))
+    #         button.title_label.setFixedWidth(button.image_button.width())
