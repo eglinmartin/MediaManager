@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Add ability to change selector menu zoom level. Bug fix - added in favourite to db schema">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Sort browser panel by directors / cast, with sorting by name or count">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/browser_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/browser_panel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/media_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/media_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,10 +56,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Storage/Coding/Games",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+    "settings.editor.selected.configurable": "Errors"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.NSFW">
+  <component name="RunManager" selected="Python.Movies">
     <configuration name="Movies" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ContentManager_V3" />
       <option name="ENV_FILES" value="" />
@@ -301,7 +298,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763903579158</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Sort browser panel by directors / cast, with sorting by name or count">
+      <option name="closed" value="true" />
+      <created>1763912787012</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1763912787012</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Sort browser panel by directors / cast, with sorting by name or count">
+      <option name="closed" value="true" />
+      <created>1763912831945</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1763912831945</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -336,7 +349,8 @@
     <MESSAGE value="More buttons, UI adjustments" />
     <MESSAGE value="Add video and thumbnail via file dialogs" />
     <MESSAGE value="Add ability to change selector menu zoom level. Bug fix - added in favourite to db schema" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add ability to change selector menu zoom level. Bug fix - added in favourite to db schema" />
+    <MESSAGE value="Sort browser panel by directors / cast, with sorting by name or count" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sort browser panel by directors / cast, with sorting by name or count" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
