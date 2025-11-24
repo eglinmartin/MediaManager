@@ -152,16 +152,6 @@ class BottomBar(QWidget):
         self.button_zoom.clicked.connect(self.switch_size)
         layout.addWidget(self.button_zoom)
 
-        self.button_sort = QPushButton('Az')
-        self.button_sort.setFont(self.bottom_bar_font)
-        self.button_sort.setStyleSheet("""
-             QPushButton {color: #ffffff; background-color: #444444;}
-             QPushButton:hover {color: #ff5555;}
-             """)
-        self.button_sort.setCursor(Qt.PointingHandCursor)
-        self.button_sort.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        layout.addWidget(self.button_sort)
-
         self.button_favourite = QPushButton('★')
         self.button_favourite.setFont(self.bottom_bar_font)
         self.button_favourite.setStyleSheet("""
@@ -218,7 +208,6 @@ class BottomBar(QWidget):
         self.combobox_browse.setFixedSize(self.player.browser_panel.list_widget.width() - 60, self.searchbar.height())
 
         self.searchbar.setFixedWidth(self.player.preview_panel.label_image.width() - 20 - self.button_add.width())
-        self.button_sort.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_switcher.setFixedSize(self.searchbar.height() * 4, self.searchbar.height())
 
         self.button_favourite.setFixedSize(self.searchbar.height(), self.searchbar.height())

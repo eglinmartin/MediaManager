@@ -1,16 +1,14 @@
 import math
 
-from PyQt5.QtGui import QFont, QIcon, QPixmap
-from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QSpacerItem, QGridLayout, \
-    QLabel, QScrollArea
-from PyQt5.QtCore import Qt, QSize, QTimer, pyqtSignal
+from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QGridLayout, QLabel, QScrollArea
+from PyQt5.QtCore import Qt, QSize, pyqtSignal
 
-from widgets import Partition, ImageWidget, TextWidget
+from widgets import Partition
 
 
-# Subclass QLabel to make it clickable
 class ClickableLabel(QLabel):
-    clicked = pyqtSignal()  # Custom signal
+    clicked = pyqtSignal()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -65,9 +63,7 @@ class SelectorRow(QWidget):
         self.text_labels = []
         for label_text in [f"{med_item.title}", f"XX:XX", f"{med_item.director}", f"{', '.join(med_item.cast)}"]:
             label = ClickableLabel(label_text)
-            label.setStyleSheet("""
-                QLabel {color: #ffffff; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;}
-            """)
+            label.setStyleSheet("color: #ffffff; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;")
             label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
             label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
             label.setFont(self.text_font)
@@ -92,31 +88,37 @@ class SelectorRow(QWidget):
         for label in self.text_labels:
             label.setStyleSheet("color: #ffffff; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;")
 
+    def set_icon(self, code):
+        if self.image_button:
+            cached_thumb = [thumb for thumb in self.player.thumb_cache if str(code) in thumb][0]
+            self.player.thumb_cache.pop(cached_thumb)
+            self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{code}"))
+
     def resizeEvent(self, event):
         width_offset = 0
         if self.image_button:
             width_offset = self.image_button.width()
 
-        height = 54
+        self.height = int(64 * self.player.screen_scale)
         if self.image_button:
-            height = int(self.image_button.width() * 0.562)
+            self.height = int(self.image_button.width() * 0.562)
 
         label_widths = [0.4, 0.15, 0.2, 0.25]
         for i, label in enumerate(self.text_labels):
             label.setFixedWidth(int((self.width() - width_offset) * label_widths[i]))
-            label.setFixedHeight(height)
+            label.setFixedHeight(self.height)
             label.enterEvent = self.button_enter
             label.leaveEvent = self.button_leave
         self.text_labels[-1].setFixedWidth(int((self.width() - width_offset) * label_widths[-1]) - 8)
 
         if self.image_button:
-            self.image_button.setFixedHeight(height)
+            self.image_button.setFixedHeight(self.height)
             if self.overlay_pixmap:
                 self.overlay_label.setFixedSize(self.image_button.size())
                 scaled_pixmap = self.overlay_pixmap.scaled(self.image_button.width(), self.image_button.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
                 self.overlay_label.setPixmap(scaled_pixmap)
 
-        self.setFixedHeight(height)
+        self.setFixedHeight(self.height)
 
 
 class SelectorItem(QWidget):
@@ -125,6 +127,7 @@ class SelectorItem(QWidget):
         self.setStyleSheet(f"background-color: #292929")
         self.player = player
         self.med_item = med_item
+        self.height = int(54 / self.player.screen_scale)
 
         # Create vertical box
         layout = QVBoxLayout(self)
@@ -199,9 +202,9 @@ class SelectorItem(QWidget):
         self.image_button.setFixedHeight(int(self.image_button.width() * 0.562))
 
         self.title_label.setFixedWidth(int(self.image_button.width()))
-        self.title_label.setFixedHeight(54)
+        self.title_label.setFixedHeight(self.height)
 
-        self.setFixedHeight(int(self.image_button.width() * 0.562) + 54)
+        self.setFixedHeight(int(self.image_button.width() * 0.562) + self.height)
 
         if self.overlay_pixmap:
             self.overlay_label.setFixedSize(self.image_button.size())
@@ -216,7 +219,7 @@ class SelectorPanel(Partition):
         self.icon_cache = {}
         self.screen_scale = screen_scale
 
-        self.num_columns = 4
+        self.num_columns = 3
         self.columns_spacing = {0: 80, 1: 80, 2: 50, 3: 40, 4: 35, 5: 31}
 
         self.layout.setContentsMargins(20, 20, 20, 20)
@@ -297,7 +300,7 @@ class SelectorPanel(Partition):
                 self.adjust_buttons_sizes(5)
 
     def switch_size(self):
-        self.num_columns = {3: 4, 4: 5, 5: 0, 0: 1, 1: 2, 2: 3}[self.num_columns]
+        self.num_columns = {3: 4, 4: 5, 5: 1, 1: 0, 0: 2, 2: 3}[self.num_columns]
         self.populate_selector()
 
     def adjust_buttons_sizes(self, num_columns):

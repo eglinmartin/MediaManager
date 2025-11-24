@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Sort browser panel by directors / cast, with sorting by name or count">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/media_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,18 +48,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Content Manager.executor": "Run",
-    "Python.Movies.executor": "Run",
-    "Python.NSFW.executor": "Run",
-    "Python.contentmanager.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Storage/Coding/Games",
-    "settings.editor.selected.configurable": "Errors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Content Manager.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Movies.executor&quot;: &quot;Run&quot;,
+    &quot;Python.NSFW.executor&quot;: &quot;Run&quot;,
+    &quot;Python.contentmanager.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.Movies">
     <configuration name="Movies" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ContentManager_V3" />
@@ -74,7 +75,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/media_manager.py" />
-      <option name="PARAMETERS" value="-db &quot;C:\Storage\Videos\Movies\Movies.db&quot; -s 1.2" />
+      <option name="PARAMETERS" value="-db &quot;C:\Storage\Videos\Movies\Movies.db&quot; -s 1.25" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="true" />
       <option name="MODULE_MODE" value="false" />
@@ -314,7 +315,23 @@
       <option name="project" value="LOCAL" />
       <updated>1763912831945</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2">
+      <option name="closed" value="true" />
+      <created>1763917464163</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1763917464163</updated>
+    </task>
+    <task id="LOCAL-00025" summary="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2">
+      <option name="closed" value="true" />
+      <created>1763917472346</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1763917472346</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -350,7 +367,8 @@
     <MESSAGE value="Add video and thumbnail via file dialogs" />
     <MESSAGE value="Add ability to change selector menu zoom level. Bug fix - added in favourite to db schema" />
     <MESSAGE value="Sort browser panel by directors / cast, with sorting by name or count" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sort browser panel by directors / cast, with sorting by name or count" />
+    <MESSAGE value="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
