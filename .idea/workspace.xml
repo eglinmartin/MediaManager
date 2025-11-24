@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Remove selector sorting button from bottom bar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/media_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/media_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/selector_panel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/selector_panel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +56,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors..ignore files&quot;
   }
 }</component>
   <component name="RunManager" selected="Python.Movies">
@@ -331,7 +330,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763917472346</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Remove selector sorting button from bottom bar">
+      <option name="closed" value="true" />
+      <created>1764005473523</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1764005473524</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -368,7 +375,8 @@
     <MESSAGE value="Add ability to change selector menu zoom level. Bug fix - added in favourite to db schema" />
     <MESSAGE value="Sort browser panel by directors / cast, with sorting by name or count" />
     <MESSAGE value="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2" />
+    <MESSAGE value="Remove selector sorting button from bottom bar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove selector sorting button from bottom bar" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

@@ -47,16 +47,6 @@ class TopBar(QWidget):
 
         layout.addStretch()
 
-        self.add_button = QPushButton("+")
-        self.add_button.setFont(self.top_font)
-        self.add_button.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #222222}
-            QPushButton:hover {color: #ff5555;}
-            """)
-        self.add_button.setCursor(Qt.PointingHandCursor)
-        self.add_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        layout.addWidget(self.add_button)
-
         # --- Minimize button ---
         self.minimize_button = QPushButton("_")
         self.minimize_button.setFont(self.top_font)
