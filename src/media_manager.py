@@ -47,6 +47,21 @@ class TopBar(QWidget):
 
         layout.addStretch()
 
+        # Current time
+        self.time_label = QLabel()
+        self.time_label.setFont(self.top_font)
+        self.time_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
+        self.update_time()
+        self.time_label.setStyleSheet("color: #ffffff;")
+
+        layout.addWidget(self.time_label)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update_time)
+        self.timer.start(1000)
+
+        layout.addSpacing(20)
+
         # --- Minimize button ---
         self.minimize_button = QPushButton("_")
         self.minimize_button.setFont(self.top_font)
@@ -73,9 +88,12 @@ class TopBar(QWidget):
 
         self.setLayout(layout)
 
+    def update_time(self):
+        self.time_label.setText(datetime.now().strftime("%H:%M"))
+
     def resizeEvent(self, event):
-        self.add_button.setFixedSize(self.add_button.height(), self.add_button.height())
         self.minimize_button.setFixedSize(self.minimize_button.height(), self.minimize_button.height())
+        self.time_label.setFixedWidth(int(self.minimize_button.width() * 2))
         self.exit_button.setFixedSize(self.exit_button.height(), self.exit_button.height())
         super().resizeEvent(event)
 

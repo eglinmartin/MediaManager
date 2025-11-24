@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Remove selector sorting button from bottom bar">
+    <list default="true" id="b09d4f8b-2cb0-42f0-8da3-4515a9898862" name="Changes" comment="Remove add button from top bar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/media_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/media_manager.py" afterDir="false" />
     </list>
@@ -47,18 +47,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.Content Manager.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Movies.executor&quot;: &quot;Run&quot;,
-    &quot;Python.NSFW.executor&quot;: &quot;Run&quot;,
-    &quot;Python.contentmanager.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Storage/Coding/Games&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors..ignore files&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.Content Manager.executor": "Run",
+    "Python.Movies.executor": "Run",
+    "Python.NSFW.executor": "Run",
+    "Python.contentmanager.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Storage/Coding/Games",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.Movies">
     <configuration name="Movies" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ContentManager_V3" />
@@ -338,7 +338,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764005473524</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Remove add button from top bar">
+      <option name="closed" value="true" />
+      <created>1764006624605</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1764006624605</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -376,7 +384,8 @@
     <MESSAGE value="Sort browser panel by directors / cast, with sorting by name or count" />
     <MESSAGE value="List view for selector panel - both with / without thumbnails. Text re-colours on hover for all elements. New thumbnail column setting of 2" />
     <MESSAGE value="Remove selector sorting button from bottom bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove selector sorting button from bottom bar" />
+    <MESSAGE value="Remove add button from top bar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove add button from top bar" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
