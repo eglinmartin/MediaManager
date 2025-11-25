@@ -4,24 +4,25 @@ from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget
 from PyQt5.QtCore import Qt, QSize
 
+from constants import Colours
 from widgets import Partition, ImageWidget, TextWidget
 
 
 class PlayerButton(QPushButton):
     def __init__(self):
         super().__init__()
-        self.setStyleSheet(f'color: #ffffff;')
+        self.setStyleSheet(f'color: {Colours.WHITE.value};')
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
 
 class PreviewPanel(Partition):
-    def __init__(self, player, color, selected_media, screen_scale):
-        super().__init__(color)
+    def __init__(self, player):
+        super().__init__(Colours.GREY3.value)
         self.layout.setSpacing(0)
         self.player = player
 
         # Create main image label
-        self.label_image = ImageWidget(self, back_col='#252525', font_col='#ffffff', alignment=Qt.AlignCenter)
+        self.label_image = ImageWidget(self, back_col=Colours.GREY3.value, font_col=Colours.WHITE.value, alignment=Qt.AlignCenter)
         self.label_image.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label_image.clicked.connect(self.player.add_thumbnail)
         self.layout.addWidget(self.label_image, alignment=Qt.AlignTop)
@@ -29,23 +30,23 @@ class PreviewPanel(Partition):
         self.layout.addSpacing(10)
 
         # Create title label
-        self.title_font = QFont("Bahnschrift Semibold", int(32 / screen_scale))
-        self.label_title = TextWidget(self, font_col='#ffffff', font=self.title_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Title')
+        self.title_font = QFont("Bahnschrift Semibold", int(32 / player.screen_scale))
+        self.label_title = TextWidget(self, font_col=Colours.WHITE.value, font=self.title_font, alignment=Qt.AlignLeft, back_colour=Colours.GREY3.value, column='Title')
         self.layout.addWidget(self.label_title, alignment=Qt.AlignTop)
 
         # Create director label
-        self.director_font = QFont("Bahnschrift Semibold", int(24 / screen_scale))
-        self.label_director = TextWidget(self, font_col='#aaaaaa', font=self.director_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Director')
+        self.director_font = QFont("Bahnschrift Semibold", int(24 / player.screen_scale))
+        self.label_director = TextWidget(self, font_col=Colours.WHITE2.value, font=self.director_font, alignment=Qt.AlignLeft, back_colour=Colours.GREY3.value, column='Director')
         self.layout.addWidget(self.label_director, alignment=Qt.AlignTop)
 
         # Create cast label
-        self.cast_font = QFont("Bahnschrift Semibold", int(20 / screen_scale))
-        self.label_cast = TextWidget(self, font_col='#777777', font=self.cast_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Cast')
+        self.cast_font = QFont("Bahnschrift Semibold", int(20 / player.screen_scale))
+        self.label_cast = TextWidget(self, font_col=Colours.WHITE3.value, font=self.cast_font, alignment=Qt.AlignLeft, back_colour=Colours.GREY3.value, column='Cast')
         self.layout.addWidget(self.label_cast, alignment=Qt.AlignTop)
 
         # Create tags label
-        self.tags_font = QFont("Bahnschrift Semibold", int(16 / screen_scale))
-        self.label_tags = TextWidget(self, font_col='#666666', font=self.tags_font, alignment=Qt.AlignLeft, back_colour='#252525', column='Tags')
+        self.tags_font = QFont("Bahnschrift Semibold", int(16 / player.screen_scale))
+        self.label_tags = TextWidget(self, font_col=Colours.WHITE4.value, font=self.tags_font, alignment=Qt.AlignLeft, back_colour=Colours.GREY3.value, column='Tags')
         self.layout.addWidget(self.label_tags, alignment=Qt.AlignTop)
 
         # Create blank space below media metadata
@@ -54,7 +55,7 @@ class PreviewPanel(Partition):
 
         # Create a horizontal layout for buttons
         self.player_menu = QWidget(self)
-        self.player_menu.setStyleSheet(f"background-color : #1c1c1c")
+        self.player_menu.setStyleSheet(f"background-color : {Colours.GREY2.value}")
         self.player_menu.setMinimumSize(1, 100)
 
         self.button_layout = QHBoxLayout(self.player_menu)
@@ -86,7 +87,7 @@ class PreviewPanel(Partition):
 
         self.layout.addWidget(self.player_menu)
 
-        self.update_panel(selected_media)
+        self.update_panel(player.selected_media)
 
     def resizeEvent(self, event):
         self.player_menu.adjustSize()
@@ -119,4 +120,4 @@ class PreviewPanel(Partition):
         else:
             self.label_tags.set_text('')
 
-        self.label_image.set_image(fr"C:\Storage\Programming\ContentManager_V3\bin\{selected_media.code}")
+        self.label_image.set_image(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{selected_media.code}")

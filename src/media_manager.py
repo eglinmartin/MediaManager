@@ -1,34 +1,32 @@
 import argparse
-import ctypes
 import os
 import random
 import shutil
 import sys
-from datetime import datetime
 
+from datetime import datetime
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont, QIcon, QPalette, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLabel, QHBoxLayout, \
     QSpacerItem, QSizePolicy, QPushButton, QLineEdit, QFileDialog, QComboBox
 
-import handler
-from browser_panel import BrowserPanel, SortType
-from handler import Media, load_media_from_json
+from browser_panel import BrowserPanel
+from constants import Colours
+from handler import Media, insert_row, load_media_from_json, update_db
 from preview_panel import PreviewPanel
 from selector_panel import SelectorPanel
-from widgets import Partition
 
 
 class TopBar(QWidget):
-    def __init__(self, player, color, screen_scale):
+    def __init__(self, player):
         super().__init__()
         self.setAutoFillBackground(True)
 
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(color))
+        palette.setColor(QPalette.Window, QColor(Colours.GREY1.value))
         self.setPalette(palette)
 
-        self.top_font = QFont("Bahnschrift Semibold", int(36 / screen_scale))
+        self.top_font = QFont("Bahnschrift Semibold", int(36 / player.screen_scale))
 
         # Set size
         self.setMinimumSize(1, int(player.min_height / 8))
@@ -41,7 +39,7 @@ class TopBar(QWidget):
 
         # --- Title label ---
         self.title_label = QLabel(f"Media Manager | {player.library_name}")
-        self.title_label.setStyleSheet("color: #ffffff; background-color: #141414")
+        self.title_label.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY1.value}")
         self.title_label.setFont(self.top_font)
         layout.addWidget(self.title_label)
 
@@ -52,7 +50,7 @@ class TopBar(QWidget):
         self.time_label.setFont(self.top_font)
         self.time_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.update_time()
-        self.time_label.setStyleSheet("color: #ffffff;")
+        self.time_label.setStyleSheet(f"color: {Colours.WHITE.value};")
 
         layout.addWidget(self.time_label)
 
@@ -65,10 +63,7 @@ class TopBar(QWidget):
         # --- Minimize button ---
         self.minimize_button = QPushButton("_")
         self.minimize_button.setFont(self.top_font)
-        self.minimize_button.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #222222}
-            QPushButton:hover {color: #ff5555;}
-            """)
+        self.minimize_button.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY3.value};")
         self.minimize_button.setCursor(Qt.PointingHandCursor)
         self.minimize_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.minimize_button.clicked.connect(lambda: self.window().showMinimized())
@@ -77,10 +72,7 @@ class TopBar(QWidget):
         # --- Exit button ---
         self.exit_button = QPushButton("✕")
         self.exit_button.setFont(self.top_font)
-        self.exit_button.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #ff5555;}
-            QPushButton:hover {color: #ff0000;}
-            """)
+        self.exit_button.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.RED.value};")
         self.exit_button.setCursor(Qt.PointingHandCursor)
         self.exit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.exit_button.clicked.connect(QApplication.quit)
@@ -99,15 +91,15 @@ class TopBar(QWidget):
 
 
 class BottomBar(QWidget):
-    def __init__(self, player, color, screen_scale):
+    def __init__(self, player):
         super().__init__()
         self.setMinimumSize(1, int(player.min_height / 12))
         self.setMaximumSize(player.min_width, int(player.min_height / 12))
         self.player = player
-        self.bottom_bar_font = QFont("Bahnschrift Semibold", int(24 / screen_scale))
+        self.bottom_bar_font = QFont("Bahnschrift Semibold", int(24 / player.screen_scale))
 
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(color))
+        palette.setColor(QPalette.Window, QColor(Colours.GREY5.value))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
@@ -117,12 +109,12 @@ class BottomBar(QWidget):
 
         self.combobox_browse = QComboBox()
         self.combobox_browse.setFont(self.bottom_bar_font)
-        self.combobox_browse.setStyleSheet("""
-             QComboBox {color: #ffffff; background-color: #444444; selection-background-color: transparent; padding-left: 10px;}
-             QComboBox:hover {color: #ff5555;}
-             QComboBox:drop-down {border: none; color: #ff5555;}
-             QComboBox QAbstractItemView {background-color: #444444; color: #ffffff; selection-background-color: transparent; selection-color: #ff5555;}
-             QComboBox::down-arrow {color: #ffffff;}
+        self.combobox_browse.setStyleSheet(f"""
+             QComboBox {{color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value}; selection-background-color: transparent; padding-left: 10px;}}
+             QComboBox:hover {{color: {Colours.RED.value};}}
+             QComboBox:drop-down {{border: none; color: {Colours.RED.value};}}
+             QComboBox QAbstractItemView {{background-color: {Colours.GREY6.value}; color: {Colours.WHITE.value}; selection-background-color: transparent; selection-color: {Colours.RED.value};}}
+             QComboBox::down-arrow {{color: {Colours.WHITE.value};}}
              """)
         self.combobox_browse.setCursor(Qt.PointingHandCursor)
         self.combobox_browse.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -136,10 +128,7 @@ class BottomBar(QWidget):
 
         self.button_sort_browser = QPushButton('A-z')
         self.button_sort_browser.setFont(self.bottom_bar_font)
-        self.button_sort_browser.setStyleSheet("""
-             QPushButton {color: #ffffff; background-color: #444444;}
-             QPushButton:hover {color: #ff5555;}
-             """)
+        self.button_sort_browser.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
         self.button_sort_browser.setCursor(Qt.PointingHandCursor)
         self.button_sort_browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_sort_browser.clicked.connect(self.player.browser_panel.set_sort_type)
@@ -149,10 +138,7 @@ class BottomBar(QWidget):
 
         self.button_zoom = QPushButton()
         self.button_zoom.setFont(self.bottom_bar_font)
-        self.button_zoom.setStyleSheet("""
-             QPushButton {color: #ffffff; background-color: #444444;}
-             QPushButton:hover {color: #ff5555;}
-             """)
+        self.button_zoom.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
         current_zoom = self.player.selector_panel.num_columns
         self.button_zoom.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_zoom_{current_zoom}"))
         self.button_zoom.setCursor(Qt.PointingHandCursor)
@@ -162,10 +148,7 @@ class BottomBar(QWidget):
 
         self.button_favourite = QPushButton('★')
         self.button_favourite.setFont(self.bottom_bar_font)
-        self.button_favourite.setStyleSheet("""
-             QPushButton {color: #ffffff; background-color: #ddbb55;}
-             QPushButton:hover {color: #ffff00;}
-             """)
+        self.button_favourite.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.YELLOW.value};")
         self.button_favourite.setCursor(Qt.PointingHandCursor)
         self.button_favourite.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_favourite.clicked.connect(player.toggle_favourites)
@@ -173,10 +156,7 @@ class BottomBar(QWidget):
 
         self.button_switcher = QPushButton('')
         self.button_switcher.setFont(self.bottom_bar_font)
-        self.button_switcher.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #444444;}
-            QPushButton:hover {color: #ff5555;}
-            """)
+        self.button_switcher.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
         self.button_switcher.setCursor(Qt.PointingHandCursor)
         self.button_switcher.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         layout.addWidget(self.button_switcher)
@@ -184,7 +164,7 @@ class BottomBar(QWidget):
         layout.addStretch()
 
         self.searchbar = QLineEdit()
-        self.searchbar.setStyleSheet(f"""background-color: #444444; color: #ffffff; border: none; padding: 10px;""")
+        self.searchbar.setStyleSheet(f"background-color: {Colours.GREY6.value}; color: {Colours.WHITE.value}; border: none; padding: 10px;")
         self.searchbar.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.searchbar.setFont(self.bottom_bar_font)
         self.searchbar.returnPressed.connect(player.filter_media)
@@ -193,10 +173,7 @@ class BottomBar(QWidget):
 
         self.button_add = QPushButton('+')
         self.button_add.setFont(self.bottom_bar_font)
-        self.button_add.setStyleSheet("""
-            QPushButton {color: #ffffff; background-color: #559955;}
-            QPushButton:hover {color: #00ff00;}
-            """)
+        self.button_add.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREEN.value};")
         self.button_add.setCursor(Qt.PointingHandCursor)
         self.button_add.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_add.clicked.connect(self.player.add_video)
@@ -257,26 +234,26 @@ class MainWindow(QMainWindow):
         layout.setSpacing(0)
 
         # Create the top bar
-        self.top_bar = TopBar(self, "#141414", screen_scale)
+        self.top_bar = TopBar(self)
         layout.addWidget(self.top_bar, 0, 0, 1, 3)
 
         self.filter_column = 'All'
         self.filter_item = 'All'
 
         # Create the list menu
-        self.browser_panel = BrowserPanel(self, "#222222", screen_scale)
+        self.browser_panel = BrowserPanel(self)
         layout.addWidget(self.browser_panel, 2, 0)
 
         # Create the selector menu
-        self.selector_panel = SelectorPanel(self, "#292929", screen_scale)
+        self.selector_panel = SelectorPanel(self)
         layout.addWidget(self.selector_panel, 2, 1)
 
         # Create the preview panel
-        self.preview_panel = PreviewPanel(self, "#252525", self.selected_media, screen_scale)
+        self.preview_panel = PreviewPanel(self)
         layout.addWidget(self.preview_panel, 2, 2)
 
         # Create a new bar below the top bar
-        self.bottom_bar = BottomBar(self, "#333333", screen_scale)
+        self.bottom_bar = BottomBar(self)
         layout.addWidget(self.bottom_bar, 1, 0, 1, 3)
 
         # Stretch factors for columns and rows:
@@ -385,7 +362,7 @@ class MainWindow(QMainWindow):
         Toggles 'favourite' attribute of selected media
         """
         self.selected_media.favourite = not bool(int(self.selected_media.favourite))
-        handler.update_db(self, column='Favourite', value=str(int(self.selected_media.favourite)))
+        update_db(self, column='Favourite', value=str(int(self.selected_media.favourite)))
         self.selector_panel.populate_selector()
 
     def resizeEvent(self, event):
@@ -397,7 +374,7 @@ class MainWindow(QMainWindow):
             return
 
         code = self.selected_media.code
-        dest_path = fr"C:\Storage\Programming\ContentManager_V3\bin\{code}"
+        dest_path = fr"C:\Storage\Programming\ContentManager_V3\thumbs\{code}"
         shutil.copyfile(src_path, dest_path)
 
         for button in self.selector_panel.selector_buttons:
@@ -416,7 +393,7 @@ class MainWindow(QMainWindow):
         file_ext = os.path.splitext(os.path.basename(file_path))[1]
         code = random.randint(10000, 99999)
 
-        handler.insert_row(self, file_name, code)
+        insert_row(self, file_name, code)
 
         self.media.append(Media(
             title=file_name, director='Unknown', cast=['Unknown',], code=code,

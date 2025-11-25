@@ -4,6 +4,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QGridLayout, QLabel, QScrollArea
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 
+from constants import Colours
 from widgets import Partition
 
 
@@ -19,7 +20,7 @@ class ClickableLabel(QLabel):
 class SelectorRow(QWidget):
     def __init__(self, player, med_item, screen_scale, create_image: bool):
         super().__init__()
-        self.setStyleSheet(f"background-color: #292929")
+        self.setStyleSheet(f"background-color: {Colours.GREY4.value}")
         self.player = player
         self.med_item = med_item
         self.create_image = create_image
@@ -32,7 +33,7 @@ class SelectorRow(QWidget):
         self.image_button = None
         if self.create_image:
             self.image_button = QPushButton()
-            self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{med_item.code}"))
+            self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{med_item.code}"))
             self.image_button.setStyleSheet(f"border: none;")
             self.image_button.clicked.connect(lambda: player.select_media(med_item.code))
             self.image_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -63,7 +64,7 @@ class SelectorRow(QWidget):
         self.text_labels = []
         for label_text in [f"{med_item.title}", f"XX:XX", f"{med_item.director}", f"{', '.join(med_item.cast)}"]:
             label = ClickableLabel(label_text)
-            label.setStyleSheet("color: #ffffff; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;")
+            label.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
             label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
             label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
             label.setFont(self.text_font)
@@ -82,17 +83,17 @@ class SelectorRow(QWidget):
 
     def button_enter(self, event):
         for label in self.text_labels:
-            label.setStyleSheet("color: #ff5555; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;")
+            label.setStyleSheet(F"color: {Colours.RED.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
 
     def button_leave(self, event):
         for label in self.text_labels:
-            label.setStyleSheet("color: #ffffff; background-color: #1d1d1d; padding-left: 5px; padding-right: 25px;")
+            label.setStyleSheet(F"color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
 
     def set_icon(self, code):
         if self.image_button:
             cached_thumb = [thumb for thumb in self.player.thumb_cache if str(code) in thumb][0]
             self.player.thumb_cache.pop(cached_thumb)
-            self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{code}"))
+            self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{code}"))
 
     def resizeEvent(self, event):
         width_offset = 0
@@ -124,7 +125,7 @@ class SelectorRow(QWidget):
 class SelectorItem(QWidget):
     def __init__(self, player, med_item, screen_scale):
         super().__init__()
-        self.setStyleSheet(f"background-color: #292929")
+        self.setStyleSheet(f"background-color: {Colours.GREY4.value}")
         self.player = player
         self.med_item = med_item
         self.height = int(54 / self.player.screen_scale)
@@ -136,7 +137,7 @@ class SelectorItem(QWidget):
 
         # Create image button
         self.image_button = QPushButton()
-        self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{med_item.code}"))
+        self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{med_item.code}"))
         self.image_button.setStyleSheet(f"border: none;")
         self.image_button.clicked.connect(lambda: player.select_media(med_item.code))
         self.image_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -164,9 +165,9 @@ class SelectorItem(QWidget):
 
         # Create title label
         self.title_label = ClickableLabel(med_item.title)
-        self.title_label.setStyleSheet("""
-            QLabel {color: #ffffff; background-color: #1d1d1d; padding: 5px;}
-            QLabel:hover {color: #ff5555;}
+        self.title_label.setStyleSheet(f"""
+            QLabel {{color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colours.RED.value};}}
         """)
         self.title_label.clicked.connect(lambda: player.select_media(med_item.code))
         self.title_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -183,20 +184,20 @@ class SelectorItem(QWidget):
         self.image_button.leaveEvent = self.button_leave
 
     def button_enter(self, event):
-        self.title_label.setStyleSheet("""
-            QLabel {color: #ff5555; background-color: #1d1d1d; padding: 5px;}
-            QLabel:hover {color: #ff5555;}
+        self.title_label.setStyleSheet(f"""
+            QLabel {{color: {Colours.RED.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colours.RED.value};}}
         """)
     def button_leave(self, event):
-        self.title_label.setStyleSheet("""
-            QLabel {color: #ffffff; background-color: #1d1d1d; padding: 5px;}
-            QLabel:hover {color: #ff5555;}
+        self.title_label.setStyleSheet(f"""
+            QLabel {{color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colours.RED.value};}}
         """)
 
     def set_icon(self, code):
         cached_thumb = [thumb for thumb in self.player.thumb_cache if str(code) in thumb][0]
         self.player.thumb_cache.pop(cached_thumb)
-        self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\{code}"))
+        self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{code}"))
 
     def resizeEvent(self, event):
         self.image_button.setFixedHeight(int(self.image_button.width() * 0.562))
@@ -213,11 +214,11 @@ class SelectorItem(QWidget):
 
 
 class SelectorPanel(Partition):
-    def __init__(self, player, color, screen_scale):
-        super().__init__(color)
+    def __init__(self, player):
+        super().__init__(Colours.GREY4.value)
         self.player = player
         self.icon_cache = {}
-        self.screen_scale = screen_scale
+        self.screen_scale = player.screen_scale
 
         self.num_columns = 3
         self.columns_spacing = {0: 80, 1: 80, 2: 50, 3: 40, 4: 35, 5: 31}
@@ -231,11 +232,11 @@ class SelectorPanel(Partition):
         self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scroll_area.setFrameShape(QScrollArea.NoFrame)
-        self.scroll_area.verticalScrollBar().setStyleSheet("""
-            QScrollBar:vertical {border: 1px solid #292929; background: #292929; width: 15px; margin: 0px 0px 0px 0px;}
-            QScrollBar::handle:vertical {background: #191919; min-height: 20px; border-radius: 7px;}
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {background: none; height: 0px;}
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {background: #292929;}
+        self.scroll_area.verticalScrollBar().setStyleSheet(f"""
+            QScrollBar:vertical {{border: 1px solid {Colours.GREY4.value}; background: {Colours.GREY4.value}; width: 15px; margin: 0px 0px 0px 0px;}}
+            QScrollBar::handle:vertical {{background: {Colours.GREY2.value}; min-height: 20px; border-radius: 7px;}}
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{background: none; height: 0px;}}
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{background: {Colours.GREY4.value};}}
         """)
 
         # Create outer container to allow widgets to top-align
