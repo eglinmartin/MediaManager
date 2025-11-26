@@ -61,7 +61,7 @@ class TopBar(QWidget):
         layout.addSpacing(20)
 
         # --- Minimize button ---
-        self.minimize_button = QPushButton("_")
+        self.minimize_button = QPushButton("—")
         self.minimize_button.setFont(self.top_font)
         self.minimize_button.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY3.value};")
         self.minimize_button.setCursor(Qt.PointingHandCursor)

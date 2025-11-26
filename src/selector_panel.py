@@ -1,5 +1,3 @@
-import math
-
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QGridLayout, QLabel, QScrollArea
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
@@ -128,7 +126,7 @@ class SelectorItem(QWidget):
         self.setStyleSheet(f"background-color: {Colours.GREY4.value}")
         self.player = player
         self.med_item = med_item
-        self.height = int(54 / self.player.screen_scale)
+        self.height = int(64 / self.player.screen_scale)
 
         # Create vertical box
         layout = QVBoxLayout(self)
