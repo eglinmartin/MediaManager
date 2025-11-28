@@ -402,7 +402,7 @@ class MainWindow(QMainWindow):
 
         src_path = file_path
         dest_path = fr"{os.path.dirname(self.db_path)}\Videos\{code}{file_ext}"
-        shutil.copyfile(src_path, dest_path)
+        shutil.move(src_path, dest_path)
 
         self.media.sort(key=lambda m: m.title)
         self.filter_media()

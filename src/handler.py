@@ -6,8 +6,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
-from PyQt5.QtWidgets import QFileDialog
-
 
 @dataclass
 class Media:
@@ -53,7 +51,7 @@ def insert_row(player, file_name, code):
     query = f"""
         INSERT INTO Media
         ("ID", "Title", "Director", "Cast", "Date", "Type", "Favourite")
-        VALUES ({code}, '{file_name}', 'Unknown', 'Unknown', '1900-01-01', 'Video', 0);
+        VALUES ({code}, "{file_name.strip("'")}", 'Unknown', 'Unknown', '1900-01-01', 'Video', 0);
     """
     cursor.execute(query)
 
