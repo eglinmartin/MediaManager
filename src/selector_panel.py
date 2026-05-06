@@ -2,7 +2,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtWidgets import QSizePolicy, QHBoxLayout, QPushButton, QWidget, QVBoxLayout, QGridLayout, QLabel, QScrollArea
 from PyQt5.QtCore import Qt, QSize, pyqtSignal
 
-from constants import Colours
+from constants import Colour
 from widgets import Partition
 
 
@@ -15,115 +15,10 @@ class ClickableLabel(QLabel):
         super().mouseReleaseEvent(event)
 
 
-class SelectorRow(QWidget):
-    def __init__(self, player, med_item, screen_scale, create_image: bool):
-        super().__init__()
-        self.setStyleSheet(f"background-color: {Colours.GREY4.value}")
-        self.player = player
-        self.med_item = med_item
-        self.create_image = create_image
-
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-
-        # Create image button
-        self.image_button = None
-        if self.create_image:
-            self.image_button = QPushButton()
-            self.image_button.setIcon(player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{med_item.code}"))
-            self.image_button.setStyleSheet(f"border: none;")
-            self.image_button.clicked.connect(lambda: player.select_media(med_item.code))
-            self.image_button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            self.image_button.setCursor(Qt.PointingHandCursor)
-            layout.addWidget(self.image_button, alignment=Qt.AlignTop)
-
-        # Create the overlay image label
-        self.overlay_label = QLabel(self)
-
-        if not med_item.tags:
-            self.overlay_pixmap = QPixmap(fr"C:\Storage\Programming\ContentManager_V3\bin\overlay_notags.png")
-            self.overlay_label.setPixmap(self.overlay_pixmap)
-
-        elif int(med_item.favourite):
-            self.overlay_pixmap = QPixmap(fr"C:\Storage\Programming\ContentManager_V3\bin\overlay_favourite.png")
-            self.overlay_label.setPixmap(self.overlay_pixmap)
-        else:
-            self.overlay_pixmap = None
-            self.overlay_label.setPixmap(QPixmap())
-
-        self.overlay_label.setAlignment(Qt.AlignCenter)
-        self.overlay_label.setStyleSheet("background: transparent;")
-        self.overlay_label.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.overlay_label.raise_()
-
-        self.text_font = QFont("Bahnschrift Semibold", int(14 / screen_scale))
-
-        self.text_labels = []
-        for label_text in [f"{med_item.title}", f"XX:XX", f"{med_item.director}", f"{', '.join(med_item.cast)}"]:
-            label = ClickableLabel(label_text)
-            label.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
-            label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-            label.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
-            label.setFont(self.text_font)
-            label.setWordWrap(True)
-            label.clicked.connect(lambda lt=med_item.code: self.player.select_media(lt))
-            label.setCursor(Qt.PointingHandCursor)
-            self.text_labels.append(label)
-            layout.addWidget(label, alignment=Qt.AlignTop)
-
-        self.text_labels[-1].setWordWrap(False)
-        layout.addStretch()
-
-        if self.image_button:
-            self.image_button.enterEvent = self.button_enter
-            self.image_button.leaveEvent = self.button_leave
-
-    def button_enter(self, event):
-        for label in self.text_labels:
-            label.setStyleSheet(F"color: {Colours.RED.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
-
-    def button_leave(self, event):
-        for label in self.text_labels:
-            label.setStyleSheet(F"color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding-left: 5px; padding-right: 25px;")
-
-    def set_icon(self, code):
-        if self.image_button:
-            cached_thumb = [thumb for thumb in self.player.thumb_cache if str(code) in thumb][0]
-            self.player.thumb_cache.pop(cached_thumb)
-            self.image_button.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\thumbs\{code}"))
-
-    def resizeEvent(self, event):
-        width_offset = 0
-        if self.image_button:
-            width_offset = self.image_button.width()
-
-        self.height = int(64 * self.player.screen_scale)
-        if self.image_button:
-            self.height = int(self.image_button.width() * 0.562)
-
-        label_widths = [0.4, 0.15, 0.2, 0.25]
-        for i, label in enumerate(self.text_labels):
-            label.setFixedWidth(int((self.width() - width_offset) * label_widths[i]))
-            label.setFixedHeight(self.height)
-            label.enterEvent = self.button_enter
-            label.leaveEvent = self.button_leave
-        self.text_labels[-1].setFixedWidth(int((self.width() - width_offset) * label_widths[-1]) - 8)
-
-        if self.image_button:
-            self.image_button.setFixedHeight(self.height)
-            if self.overlay_pixmap:
-                self.overlay_label.setFixedSize(self.image_button.size())
-                scaled_pixmap = self.overlay_pixmap.scaled(self.image_button.width(), self.image_button.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                self.overlay_label.setPixmap(scaled_pixmap)
-
-        self.setFixedHeight(self.height)
-
-
 class SelectorItem(QWidget):
     def __init__(self, player, med_item, screen_scale):
         super().__init__()
-        self.setStyleSheet(f"background-color: {Colours.GREY4.value}")
+        self.setStyleSheet(f"background-color: {Colour.GREY4.value}")
         self.player = player
         self.med_item = med_item
         self.height = int(64 / self.player.screen_scale)
@@ -164,8 +59,8 @@ class SelectorItem(QWidget):
         # Create title label
         self.title_label = ClickableLabel(med_item.title)
         self.title_label.setStyleSheet(f"""
-            QLabel {{color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
-            QLabel:hover {{color: {Colours.RED.value};}}
+            QLabel {{color: {Colour.WHITE.value}; background-color: {Colour.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colour.RED.value};}}
         """)
         self.title_label.clicked.connect(lambda: player.select_media(med_item.code))
         self.title_label.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -183,13 +78,14 @@ class SelectorItem(QWidget):
 
     def button_enter(self, event):
         self.title_label.setStyleSheet(f"""
-            QLabel {{color: {Colours.RED.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
-            QLabel:hover {{color: {Colours.RED.value};}}
+            QLabel {{color: {Colour.RED.value}; background-color: {Colour.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colour.RED.value};}}
         """)
+
     def button_leave(self, event):
         self.title_label.setStyleSheet(f"""
-            QLabel {{color: {Colours.WHITE.value}; background-color: {Colours.GREY2.value}; padding: 5px;}}
-            QLabel:hover {{color: {Colours.RED.value};}}
+            QLabel {{color: {Colour.WHITE.value}; background-color: {Colour.GREY2.value}; padding: 5px;}}
+            QLabel:hover {{color: {Colour.RED.value};}}
         """)
 
     def set_icon(self, code):
@@ -213,7 +109,7 @@ class SelectorItem(QWidget):
 
 class SelectorPanel(Partition):
     def __init__(self, player):
-        super().__init__(Colours.GREY4.value)
+        super().__init__(Colour.GREY4.value)
         self.player = player
         self.icon_cache = {}
         self.screen_scale = player.screen_scale
@@ -231,10 +127,10 @@ class SelectorPanel(Partition):
         self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.scroll_area.setFrameShape(QScrollArea.NoFrame)
         self.scroll_area.verticalScrollBar().setStyleSheet(f"""
-            QScrollBar:vertical {{border: 1px solid {Colours.GREY4.value}; background: {Colours.GREY4.value}; width: 15px; margin: 0px 0px 0px 0px;}}
-            QScrollBar::handle:vertical {{background: {Colours.GREY2.value}; min-height: 20px; border-radius: 7px;}}
+            QScrollBar:vertical {{border: 1px solid {Colour.GREY4.value}; background: {Colour.GREY4.value}; width: 15px; margin: 0px 0px 0px 0px;}}
+            QScrollBar::handle:vertical {{background: {Colour.GREY2.value}; min-height: 20px; border-radius: 7px;}}
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{background: none; height: 0px;}}
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{background: {Colours.GREY4.value};}}
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{background: {Colour.GREY4.value};}}
         """)
 
         # Create outer container to allow widgets to top-align
@@ -270,36 +166,18 @@ class SelectorPanel(Partition):
 
         self.selector_buttons = []
 
-        if self.num_columns >= 2:
-            for i, med_item in enumerate(self.player.filtered_media):
-                button = SelectorItem(self.player, med_item, self.screen_scale)
-                self.selector_buttons.append(button)
-                self.grid_layout.addWidget(button, i // self.num_columns, i % self.num_columns)
+        for i, med_item in enumerate(self.player.filtered_media):
+            button = SelectorItem(self.player, med_item, self.screen_scale)
+            self.selector_buttons.append(button)
+            self.grid_layout.addWidget(button, i // self.num_columns, i % self.num_columns)
 
-            self.scroll_area.widget().updateGeometry()
-            self.updateGeometry()
+        self.scroll_area.widget().updateGeometry()
+        self.updateGeometry()
 
-            self.adjust_buttons_sizes(self.num_columns)
-
-        else:
-            for i, med_item in enumerate(self.player.filtered_media):
-
-                if self.num_columns == 1:
-                    button = SelectorRow(self.player, med_item, self.screen_scale, create_image=True)
-                else:
-                    button = SelectorRow(self.player, med_item, self.screen_scale, create_image=False)
-
-                self.selector_buttons.append(button)
-                self.grid_layout.addWidget(button, i // 1, i % 1)
-
-            self.scroll_area.widget().updateGeometry()
-            self.updateGeometry()
-
-            if self.num_columns == 1:
-                self.adjust_buttons_sizes(5)
+        self.adjust_buttons_sizes(self.num_columns)
 
     def switch_size(self):
-        self.num_columns = {3: 4, 4: 5, 5: 1, 1: 0, 0: 2, 2: 3}[self.num_columns]
+        self.num_columns = {2: 3, 3: 4, 4: 2}[self.num_columns]
         self.populate_selector()
 
     def adjust_buttons_sizes(self, num_columns):

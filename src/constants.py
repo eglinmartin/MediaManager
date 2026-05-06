@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Colours(Enum):
+class Colour(Enum):
     GREY1 = '#141414'
     GREY2 = '#1a1a1a'
     GREY3 = '#222222'

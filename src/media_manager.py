@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QLa
     QSpacerItem, QSizePolicy, QPushButton, QLineEdit, QFileDialog, QComboBox
 
 from browser_panel import BrowserPanel
-from constants import Colours
+from constants import Colour
 from handler import Media, insert_row, load_media_from_json, update_db
 from preview_panel import PreviewPanel
 from selector_panel import SelectorPanel
@@ -23,7 +23,7 @@ class TopBar(QWidget):
         self.setAutoFillBackground(True)
 
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(Colours.GREY1.value))
+        palette.setColor(QPalette.Window, QColor(Colour.GREY1.value))
         self.setPalette(palette)
 
         self.top_font = QFont("Bahnschrift Semibold", int(36 / player.screen_scale))
@@ -39,7 +39,7 @@ class TopBar(QWidget):
 
         # --- Title label ---
         self.title_label = QLabel(f"Media Manager | {player.library_name}")
-        self.title_label.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY1.value}")
+        self.title_label.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.GREY1.value}")
         self.title_label.setFont(self.top_font)
         layout.addWidget(self.title_label)
 
@@ -50,7 +50,7 @@ class TopBar(QWidget):
         self.time_label.setFont(self.top_font)
         self.time_label.setAlignment(Qt.AlignRight | Qt.AlignVCenter)
         self.update_time()
-        self.time_label.setStyleSheet(f"color: {Colours.WHITE.value};")
+        self.time_label.setStyleSheet(f"color: {Colour.WHITE.value};")
 
         layout.addWidget(self.time_label)
 
@@ -63,7 +63,7 @@ class TopBar(QWidget):
         # --- Minimize button ---
         self.minimize_button = QPushButton("—")
         self.minimize_button.setFont(self.top_font)
-        self.minimize_button.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY3.value};")
+        self.minimize_button.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.GREY3.value};")
         self.minimize_button.setCursor(Qt.PointingHandCursor)
         self.minimize_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.minimize_button.clicked.connect(lambda: self.window().showMinimized())
@@ -72,7 +72,7 @@ class TopBar(QWidget):
         # --- Exit button ---
         self.exit_button = QPushButton("✕")
         self.exit_button.setFont(self.top_font)
-        self.exit_button.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.RED.value};")
+        self.exit_button.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.RED.value};")
         self.exit_button.setCursor(Qt.PointingHandCursor)
         self.exit_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.exit_button.clicked.connect(QApplication.quit)
@@ -99,7 +99,7 @@ class BottomBar(QWidget):
         self.bottom_bar_font = QFont("Bahnschrift Semibold", int(24 / player.screen_scale))
 
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(Colours.GREY5.value))
+        palette.setColor(QPalette.Window, QColor(Colour.GREY5.value))
         self.setPalette(palette)
         self.setAutoFillBackground(True)
 
@@ -110,25 +110,24 @@ class BottomBar(QWidget):
         self.combobox_browse = QComboBox()
         self.combobox_browse.setFont(self.bottom_bar_font)
         self.combobox_browse.setStyleSheet(f"""
-             QComboBox {{color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value}; selection-background-color: transparent; padding-left: 10px;}}
-             QComboBox:hover {{color: {Colours.RED.value};}}
-             QComboBox:drop-down {{border: none; color: {Colours.RED.value};}}
-             QComboBox QAbstractItemView {{background-color: {Colours.GREY6.value}; color: {Colours.WHITE.value}; selection-background-color: transparent; selection-color: {Colours.RED.value};}}
-             QComboBox::down-arrow {{color: {Colours.WHITE.value};}}
+             QComboBox {{color: {Colour.WHITE.value}; background-color: {Colour.GREY6.value}; selection-background-color: transparent; padding-left: 10px;}}
+             QComboBox:hover {{color: {Colour.RED.value};}}
+             QComboBox:drop-down {{border: none; color: {Colour.RED.value};}}
+             QComboBox QAbstractItemView {{background-color: {Colour.GREY6.value}; color: {Colour.WHITE.value}; selection-background-color: transparent; selection-color: {Colour.RED.value};}}
+             QComboBox::down-arrow {{color: {Colour.WHITE.value};}}
              """)
         self.combobox_browse.setCursor(Qt.PointingHandCursor)
         self.combobox_browse.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.combobox_browse.currentTextChanged.connect(self.player.browser_panel.update_listbox)
 
-        # list_options = ['Directors', 'Cast', 'Tags']
-        list_options = ['Directors', 'Cast']
+        list_options = ['Directors', 'Actors', 'Tags']
         for list_option in list_options:
             self.combobox_browse.addItem(list_option)
         layout.addWidget(self.combobox_browse)
 
         self.button_sort_browser = QPushButton('A-z')
         self.button_sort_browser.setFont(self.bottom_bar_font)
-        self.button_sort_browser.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
+        self.button_sort_browser.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.GREY6.value};")
         self.button_sort_browser.setCursor(Qt.PointingHandCursor)
         self.button_sort_browser.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_sort_browser.clicked.connect(self.player.browser_panel.set_sort_type)
@@ -138,7 +137,7 @@ class BottomBar(QWidget):
 
         self.button_zoom = QPushButton()
         self.button_zoom.setFont(self.bottom_bar_font)
-        self.button_zoom.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
+        self.button_zoom.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.GREY6.value};")
         current_zoom = self.player.selector_panel.num_columns
         self.button_zoom.setIcon(self.player.get_icon(fr"C:\Storage\Programming\ContentManager_V3\bin\icon_zoom_{current_zoom}"))
         self.button_zoom.setCursor(Qt.PointingHandCursor)
@@ -148,23 +147,16 @@ class BottomBar(QWidget):
 
         self.button_favourite = QPushButton('★')
         self.button_favourite.setFont(self.bottom_bar_font)
-        self.button_favourite.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.YELLOW.value};")
+        self.button_favourite.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.YELLOW.value};")
         self.button_favourite.setCursor(Qt.PointingHandCursor)
         self.button_favourite.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_favourite.clicked.connect(player.toggle_favourites)
         layout.addWidget(self.button_favourite)
 
-        self.button_switcher = QPushButton('')
-        self.button_switcher.setFont(self.bottom_bar_font)
-        self.button_switcher.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREY6.value};")
-        self.button_switcher.setCursor(Qt.PointingHandCursor)
-        self.button_switcher.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        layout.addWidget(self.button_switcher)
-
         layout.addStretch()
 
         self.searchbar = QLineEdit()
-        self.searchbar.setStyleSheet(f"background-color: {Colours.GREY6.value}; color: {Colours.WHITE.value}; border: none; padding: 10px;")
+        self.searchbar.setStyleSheet(f"background-color: {Colour.GREY6.value}; color: {Colour.WHITE.value}; border: none; padding: 10px;")
         self.searchbar.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.searchbar.setFont(self.bottom_bar_font)
         self.searchbar.returnPressed.connect(player.filter_media)
@@ -173,7 +165,7 @@ class BottomBar(QWidget):
 
         self.button_add = QPushButton('+')
         self.button_add.setFont(self.bottom_bar_font)
-        self.button_add.setStyleSheet(f"color: {Colours.WHITE.value}; background-color: {Colours.GREEN.value};")
+        self.button_add.setStyleSheet(f"color: {Colour.WHITE.value}; background-color: {Colour.GREEN.value};")
         self.button_add.setCursor(Qt.PointingHandCursor)
         self.button_add.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.button_add.clicked.connect(self.player.add_video)
@@ -193,7 +185,6 @@ class BottomBar(QWidget):
         self.combobox_browse.setFixedSize(self.player.browser_panel.list_widget.width() - 60, self.searchbar.height())
 
         self.searchbar.setFixedWidth(self.player.preview_panel.label_image.width() - 20 - self.button_add.width())
-        self.button_switcher.setFixedSize(self.searchbar.height() * 4, self.searchbar.height())
 
         self.button_favourite.setFixedSize(self.searchbar.height(), self.searchbar.height())
         self.button_zoom.setFixedSize(self.searchbar.height(), self.searchbar.height())
@@ -286,16 +277,16 @@ class MainWindow(QMainWindow):
 
         self.filtered_media = [med for med in self.media]
 
-        if self.filter_item == 'All':
+        if 'All (' in self.filter_item:
             self.filtered_media = [med for med in self.media]
 
         else:
             if self.filter_column == 'Directors':
                 self.filtered_media = [med for med in self.filtered_media if str(self.filter_item).split(' (')[0] in med.director]
-            if self.filter_column == 'Cast':
+            if self.filter_column == 'Actors':
                 self.filtered_media = [med for med in self.filtered_media if str(self.filter_item).split(' (')[0] in med.cast]
             elif self.filter_column == 'Tags':
-                self.filtered_media = [med for med in self.filtered_media if med.tags and self.filter_item in med.tags]
+                self.filtered_media = [med for med in self.filtered_media if med.tags and str(self.filter_item)[1:].split(' (')[0] in med.tags]
 
         if self.bottom_bar.searchbar.text():
             self.search()

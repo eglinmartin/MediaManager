@@ -7,7 +7,7 @@ from PyQt5.QtGui import QPixmap, QPainter, QColor, QFont
 from PyQt5.QtCore import Qt
 
 import handler
-from constants import Colours
+from constants import Colour
 
 
 class ImageWidget(QLabel):
@@ -64,7 +64,7 @@ class ImageWidget(QLabel):
 
 
 class TextWidget(QTextEdit):
-    def __init__(self, parent=None, font_col=Colours.WHITE.value, font=None, alignment=Qt.AlignLeft, back_colour="transparent", column=None):
+    def __init__(self, parent=None, font_col=Colour.WHITE.value, font=None, alignment=Qt.AlignLeft, back_colour="transparent", column=None):
         super().__init__(parent)
 
         if font:
@@ -129,7 +129,5 @@ class Partition(QWidget):
         self.layout.setSpacing(15)
         self.setLayout(self.layout)
 
-
     def add_widget(self, widget):
         self.layout.addWidget(widget)
-

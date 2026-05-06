@@ -1,16 +1,16 @@
 import re
 
-from enum import Enum
+from enum import StrEnum
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QSizePolicy, QListWidget
 
-from constants import Colours
+from constants import Colour
 from widgets import Partition
 
 
-class SortType(Enum):
-    AtoZ = 1
-    COUNT = 2
+class SortType(StrEnum):
+    AtoZ = 'A-z'
+    COUNT = '9-1'
 
 
 class Browser(QListWidget):
@@ -21,15 +21,15 @@ class Browser(QListWidget):
         self.screen_scale = player.screen_scale
 
         self.setStyleSheet(f"""
-            QListWidget {{border: none; color: {Colours.WHITE.value}; background-color: {Colours.GREY3.value};}}
+            QListWidget {{border: none; color: {Colour.WHITE.value}; background-color: {Colour.GREY3.value};}}
             QListWidget::item {{padding-top: 5px; padding-bottom: 5px;}}
-            QListWidget::item:selected {{background-color: {Colours.GREY2.value}; color: {Colours.WHITE.value}; outline: none; border: none; color: {Colours.RED.value};}}
-            QListWidget::item:hover {{background-color: {Colours.GREY4.value}; outline: none; color: {Colours.RED.value};}}
+            QListWidget::item:selected {{background-color: {Colour.GREY2.value}; color: {Colour.WHITE.value}; outline: none; border: none; color: {Colour.RED.value};}}
+            QListWidget::item:hover {{background-color: {Colour.GREY4.value}; outline: none; color: {Colour.RED.value};}}
             QListView {{ outline: 0;}}
-            QScrollBar:vertical {{border: 1px solid {Colours.GREY3.value}; background: {Colours.GREY3.value}; width: 15px; margin: 0px 0px 0px 0px;}}
-            QScrollBar::handle:vertical {{background: {Colours.GREY5.value}; min-height: 20px; border-radius: 7px;}}
+            QScrollBar:vertical {{border: 1px solid {Colour.GREY3.value}; background: {Colour.GREY3.value}; width: 15px; margin: 0px 0px 0px 0px;}}
+            QScrollBar::handle:vertical {{background: {Colour.GREY5.value}; min-height: 20px; border-radius: 7px;}}
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{background: none; height: 0px;}}
-            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{background: {Colours.GREY3.value};}}
+            QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{background: {Colour.GREY3.value};}}
             """)
 
         self.browser_font = QFont("Bahnschrift Semibold", int(14 / player.screen_scale))
@@ -40,7 +40,7 @@ class Browser(QListWidget):
 
 class BrowserPanel(Partition):
     def __init__(self, player):
-        super().__init__(Colours.GREY3.value)
+        super().__init__(Colour.GREY3.value)
         self.setContentsMargins(16, 16, 16, 16)
         self.player = player
         self.screen_scale = player.screen_scale
@@ -54,10 +54,10 @@ class BrowserPanel(Partition):
     def set_sort_type(self):
         if self.sort_type == SortType.AtoZ:
             self.sort_type = SortType.COUNT
-            self.player.bottom_bar.button_sort_browser.setText('9-1')
+            self.player.bottom_bar.button_sort_browser.setText(SortType.COUNT)
         else:
             self.sort_type = SortType.AtoZ
-            self.player.bottom_bar.button_sort_browser.setText('A-z')
+            self.player.bottom_bar.button_sort_browser.setText(SortType.AtoZ)
 
         self.update_listbox(self.parameter)
 
@@ -72,14 +72,16 @@ class BrowserPanel(Partition):
 
         if parameter == 'Directors':
             unique_items = {f'{item.director} ({len([m for m in self.player.media if item.director == m.director])})' for item in self.player.media}
-        if parameter == 'Cast':
+        if parameter == 'Actors':
             unique_items = {f'{actor.strip()} ({len([m for m in self.player.media if actor in m.cast])})' for med in self.player.media for actor in (med.cast if med.cast else [])}
+        if parameter == 'Tags':
+            unique_items = {f'{tag} ({len([m for m in self.player.media if m.tags and tag[1:] in m.tags])})' for med in self.player.media for tag in (med.tags.split(' ') if med.tags else [])}
 
         if self.sort_type == SortType.AtoZ:
             sorted_items = sorted(unique_items)
         elif self.sort_type == SortType.COUNT:
             sorted_items = sorted(unique_items, key=lambda x: (-int(re.search(r'\((\d+)\)', x).group(1)), x))
-        appended_items = ['All'] + sorted_items
+        appended_items = [f'All ({len(self.player.media)})'] + sorted_items
 
         for item in appended_items:
             self.list_widget.addItem(item)
